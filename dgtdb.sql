@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2024 at 09:44 AM
+-- Generation Time: Feb 09, 2024 at 10:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -96,7 +96,8 @@ INSERT INTO `tb_banktobanktransectiondetail` (`Id`, `FromAccount`, `ToAccount`, 
 (17, 'CBL4873639484', 'DBBL348763', '2024-02-08', 1000000, 17, ''),
 (18, 'DBBL348763', 'CBL4873639484', '2024-02-08', 500000, 14, ''),
 (19, 'FSIB937463836483', 'CBL4873639484', '2024-02-08', 1000000, 2, ''),
-(20, 'FSIB937463836483', 'CBL4873639484', '2024-02-08', 5000000, 18, '');
+(20, 'FSIB937463836483', 'CBL4873639484', '2024-02-08', 5000000, 18, ''),
+(21, 'CBL4873639484', 'DBBL348763', '2024-02-09', 1000000, 11, '');
 
 -- --------------------------------------------------------
 
@@ -116,6 +117,34 @@ CREATE TABLE `tb_catagoryinfo` (
 INSERT INTO `tb_catagoryinfo` (`Id`, `C_Name`) VALUES
 (1, 'Genarel'),
 (2, 'IT');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_dailyexpenses`
+--
+
+CREATE TABLE `tb_dailyexpenses` (
+  `Id` int(11) NOT NULL,
+  `EId` int(11) DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  `Amount` int(11) DEFAULT NULL,
+  `PurposeId` int(11) DEFAULT NULL,
+  `Remark` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_dailyexpenses`
+--
+
+INSERT INTO `tb_dailyexpenses` (`Id`, `EId`, `Date`, `Amount`, `PurposeId`, `Remark`) VALUES
+(1, 1, '2024-02-08', 500, 2, NULL),
+(2, 2, '2024-02-08', 600, 2, 'Done!'),
+(3, 11, '2024-02-08', 1000, 1, '!Nothing'),
+(4, 2, '2024-02-08', 3000, 6, ''),
+(5, 15, '2024-02-08', 5000, 3, ''),
+(6, 16, '2024-02-08', 1200, 5, ''),
+(7, 11, '2024-02-09', 1200, 6, '');
 
 -- --------------------------------------------------------
 
@@ -238,7 +267,11 @@ INSERT INTO `tb_dipositandwithdrawdetail` (`Id`, `AccountNumber`, `Amount`, `Dat
 (56, 'CBL4873639484', 1200000, '2024-02-08', 2, 11, ''),
 (57, 'CBL4873639484', 5000000, '2024-02-08', 1, 18, 'Bank to bank transfer diposit.'),
 (58, 'FSIB937463836483', 5000000, '2024-02-08', 2, 18, 'Bank to bank transfer withdraw.'),
-(59, 'DBBL348763', 1, '2024-02-08', 2, 1, '');
+(59, 'DBBL348763', 1, '2024-02-08', 2, 1, ''),
+(60, 'CBL4873639484', 10000, '2024-02-09', 1, 11, ''),
+(61, 'CBL4873639484', 12000, '2024-02-09', 2, 15, ''),
+(62, 'DBBL348763', 1000000, '2024-02-09', 1, 11, 'Bank to bank transfer diposit.'),
+(63, 'CBL4873639484', 1000000, '2024-02-09', 2, 11, 'Bank to bank transfer withdraw.');
 
 -- --------------------------------------------------------
 
@@ -467,7 +500,9 @@ INSERT INTO `tb_moneysentandreceived` (`Id`, `SEId`, `REId`, `date`, `Amount`, `
 (68, 17, 1, '2024-02-08', 500, '', 2),
 (69, 1, 16, '2024-02-08', 1000, '', 1),
 (70, 1, 13, '2024-02-08', 1200, '', 1),
-(71, 16, 1, '2024-02-08', 500, '', 2);
+(71, 16, 1, '2024-02-08', 500, '', 2),
+(72, 1, 2, '2024-02-09', 1000, '', 1),
+(73, 13, 1, '2024-02-09', 2500, '', 2);
 
 -- --------------------------------------------------------
 
@@ -499,7 +534,57 @@ INSERT INTO `tb_productinfo` (`Id`, `P_Name`, `P_Cat_Id`, `P_Price`, `P_Remark`,
 (8, 'A4 Off set paper 1rim', 1, 450, 'N/A', 'IMG-65646f70db7548.70340191.jpg'),
 (9, 'Management Ring File B2B', 1, 70, 'N/A', 'IMG-6564703159cc47.45718605.jpg'),
 (10, 'Ball Pen Black', 1, 4, 'N/A', 'IMG-6565a8c75dc777.85862740.png'),
-(11, 'Gam Tep', 1, 35, 'N/A', 'IMG-656d6754a19ac7.90385396.png');
+(11, 'Gam Tep', 1, 35, 'N/A', 'IMG-656d6754a19ac7.90385396.png'),
+(12, 'Management Ring File B2B', 1, 1, 'N/A', 'IMG-65c5dfd4a94069.38991440.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_purpose`
+--
+
+CREATE TABLE `tb_purpose` (
+  `Id` int(11) NOT NULL,
+  `P_Name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_purpose`
+--
+
+INSERT INTO `tb_purpose` (`Id`, `P_Name`) VALUES
+(1, 'Entertainment'),
+(2, 'Evening Food'),
+(3, 'Internet'),
+(4, 'Tea & Coffee'),
+(5, 'Utiliti Bill'),
+(6, 'Fual & Gas');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_salarysheet`
+--
+
+CREATE TABLE `tb_salarysheet` (
+  `Id` int(11) NOT NULL,
+  `Date` date DEFAULT NULL,
+  `EId` int(11) DEFAULT NULL,
+  `BasicSalary` int(11) DEFAULT NULL,
+  `HouseRent` int(11) DEFAULT NULL,
+  `MedicalCost` int(11) DEFAULT NULL,
+  `Transport` int(11) DEFAULT NULL,
+  `OvertimeH` int(11) DEFAULT NULL,
+  `OvertimeM` int(11) DEFAULT NULL,
+  `AbsentD` int(11) DEFAULT NULL,
+  `AbsentDedusctM` int(11) DEFAULT NULL,
+  `VAT` int(11) DEFAULT NULL,
+  `ProvidentFound` int(11) DEFAULT NULL,
+  `Advance` int(11) DEFAULT NULL,
+  `Remark` varchar(255) DEFAULT NULL,
+  `Bonus` int(11) DEFAULT NULL,
+  `TotalSalary` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -611,6 +696,12 @@ ALTER TABLE `tb_catagoryinfo`
   ADD PRIMARY KEY (`Id`);
 
 --
+-- Indexes for table `tb_dailyexpenses`
+--
+ALTER TABLE `tb_dailyexpenses`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indexes for table `tb_dasignation_info`
 --
 ALTER TABLE `tb_dasignation_info`
@@ -663,6 +754,18 @@ ALTER TABLE `tb_productinfo`
   ADD PRIMARY KEY (`Id`);
 
 --
+-- Indexes for table `tb_purpose`
+--
+ALTER TABLE `tb_purpose`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- Indexes for table `tb_salarysheet`
+--
+ALTER TABLE `tb_salarysheet`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indexes for table `tb_skill`
 --
 ALTER TABLE `tb_skill`
@@ -700,13 +803,19 @@ ALTER TABLE `tb_bankdetail`
 -- AUTO_INCREMENT for table `tb_banktobanktransectiondetail`
 --
 ALTER TABLE `tb_banktobanktransectiondetail`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tb_catagoryinfo`
 --
 ALTER TABLE `tb_catagoryinfo`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tb_dailyexpenses`
+--
+ALTER TABLE `tb_dailyexpenses`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tb_dasignation_info`
@@ -724,7 +833,7 @@ ALTER TABLE `tb_department`
 -- AUTO_INCREMENT for table `tb_dipositandwithdrawdetail`
 --
 ALTER TABLE `tb_dipositandwithdrawdetail`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- AUTO_INCREMENT for table `tb_employeeinfo`
@@ -748,13 +857,25 @@ ALTER TABLE `tb_mark`
 -- AUTO_INCREMENT for table `tb_moneysentandreceived`
 --
 ALTER TABLE `tb_moneysentandreceived`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `tb_productinfo`
 --
 ALTER TABLE `tb_productinfo`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT for table `tb_purpose`
+--
+ALTER TABLE `tb_purpose`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tb_salarysheet`
+--
+ALTER TABLE `tb_salarysheet`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tb_skill`

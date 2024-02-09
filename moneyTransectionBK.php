@@ -404,28 +404,41 @@ if(isset($_POST['btnExpenses']))
 
 
 
-// ==================== Check Salary section start ==================================== //
+// ==================== Salary section start ==================================== //
 
-if(isset($_POST['btnCheck2']))
+if(isset($_POST['btnSalaey']))
 {
-    function calculateSalary($b,$h,$m,$t,$om,$va,$ab,$ad) 
+    function calculateSalary($b,$h,$m,$t,$om,$va,$ab,$ad,$bns,$dt,$epId) 
     {
-        $z = ($b+$h+$m+$t+$om)-($va+$ab+$ad);
+        $z = ($b+$h+$m+$t+$om+$bns)-($va+$ab+$ad);
         return $z;
     }
 
-    
+    // function InserSalary($b,$h,$m,$t,$om,$va,$ab,$ad,$bns,$dt,$epId,$ot,$abd,$pbt,$rmk)
+    // {
+    //     $z = ($b+$h+$m+$t+$om+$bns)-($va+$ab+$ad);
+        
+    //     $sqlInserSalary = "INSERT INTO `tb_salarysheet`(`Date`, `EId`, `BasicSalary`, `HouseRent`, `MedicalCost`, `Transport`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDedusctM`, `VAT`, `ProvidentFound`, `Advance`, `Remark`, `Bonus`,`TotalSalary`) VALUES ('$dt','$epId','$b','$h','$m','$t','$ot','$om','$abd','$ab','$va','$pbt','$ad','$rmk','$bns','$z')";
+    //     $sqlInserSalaryResult = mysqli_query($conn,$sqlInserSalary);
+    // }
 
-    $BasicSalary = $_POST['txt'];
-    $Advance = $_POST['txtAD'];
-    $Overtime = $_POST['txtOT'];
+    $date = date("Y-m-d");
+    $Eid = $_POST['cbxEmployeeSL'];
+    $BasicSalary = $_POST['txtBasicSalarySL'];
+    $Advance = $_POST['txtAdvanceSalarySL'];
+    $Bonus = $_POST['txtBonusSL'];
+    $remark = $_POST['txtRemarkSL'];
+
+    $Overtime = $_POST['txtOvertimeSL'];
     $OvertimeMoney = (($BasicSalary/26)/8)*$Overtime;
     $OvertimeMoney = round($OvertimeMoney,0);
         echo "Total overtime houser ".$Overtime."h total amount is: ".$OvertimeMoney."/- ";
-    $AbsentDay = $_POST['txtAB'];
+
+    $AbsentDay = $_POST['txtAbsentDaySL'];
     $AbsentDeduct = ($BasicSalary/26)*$AbsentDay;
     $AbsentDeduct = round($AbsentDeduct,0);
         echo "Absent Deduct for ".$AbsentDay." days total amount is: ".$AbsentDeduct."/- ";
+
     switch($BasicSalary)
     {
         case $BasicSalary <= 10000:
@@ -434,13 +447,13 @@ if(isset($_POST['btnCheck2']))
             $medicalCost = ((110*$BasicSalary)/100)-$BasicSalary;
                 echo " Medical cost is 10%: ".$medicalCost.'/-  ';
             $transport = ((110*$BasicSalary)/100)-$BasicSalary;
-                echo " Transport cost is10%: ".$transport.'/-  ';
+                echo " Transport cost is 10%: ".$transport.'/-  ';
             $VAT = ((105*$BasicSalary)/100)-$BasicSalary;
                 echo " VAT is 5%: ".$VAT.'/-  ';
             $PbtFound = ((105*$BasicSalary)/100)-$BasicSalary;
                 echo " Provident found is 5%: ".$PbtFound.'/-  ';
             //function call
-            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance);
+            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance,$Bonus,$date,$Eid);
             break;
         case $BasicSalary <= 25000:
             $houseRent = ((125*$BasicSalary)/100)-$BasicSalary;
@@ -454,7 +467,7 @@ if(isset($_POST['btnCheck2']))
             $PbtFound = ((107*$BasicSalary)/100)-$BasicSalary;
                 echo " Provident found is 7%: ".$PbtFound.'/-  ';
             //function call
-            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance);
+            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance,$Bonus,$date,$Eid);
             break;
         case $BasicSalary <= 30000:
             $houseRent = ((130*$BasicSalary)/100)-$BasicSalary;
@@ -468,7 +481,7 @@ if(isset($_POST['btnCheck2']))
             $PbtFound = ((108*$BasicSalary)/100)-$BasicSalary;
                 echo " Provident found is 8%: ".$PbtFound.'/-  ';
             //function call
-            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance);
+            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance,$Bonus,$date,$Eid);
             break;
         case $BasicSalary <= 40000:
             $houseRent = ((140*$BasicSalary)/100)-$BasicSalary;
@@ -482,7 +495,7 @@ if(isset($_POST['btnCheck2']))
             $PbtFound = ((109*$BasicSalary)/100)-$BasicSalary;
                 echo " Provident found is 9%: ".$PbtFound.'/-  ';
             //function call
-            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance);
+            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance,$Bonus,$date,$Eid);
             break;
         case $BasicSalary <= 50000:
             $houseRent = ((150*$BasicSalary)/100)-$BasicSalary;
@@ -496,7 +509,7 @@ if(isset($_POST['btnCheck2']))
             $PbtFound = ((110*$BasicSalary)/100)-$BasicSalary;
                 echo " Provident found is 10%: ".$PbtFound.'/-  ';
             //function call
-            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance);
+            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance,$Bonus,$date,$Eid);
             break;
         case $BasicSalary <= 100000:
             $houseRent = ((170*$BasicSalary)/100)-$BasicSalary;
@@ -510,7 +523,7 @@ if(isset($_POST['btnCheck2']))
             $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
                 echo " Provident found is 15%: ".$PbtFound.'/-  ';
             //function call
-            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance);
+            echo"Total Salary: ".calculateSalary($BasicSalary,$houseRent,$medicalCost,$transport,$OvertimeMoney, $VAT, $AbsentDeduct, $Advance,$Bonus,$date,$Eid);
             break;
         default:
             echo "Do not increase House rent.";
@@ -523,7 +536,7 @@ if(isset($_POST['btnCheck2']))
 }
 
 
-// ==================== Check Salary section end ==================================== //
+// ==================== Salary section end ==================================== //
 
 
 ?>
