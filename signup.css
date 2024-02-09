@@ -1,0 +1,59 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+	font-family: 'Titillium Web', sans-serif;
+	font-size:16px;
+	color:#666f80;
+    text-transform:initial;
+    max-width:1920px;
+    margin:0 auto;
+	overflow-x:hidden;
+    background-color: rgb(223, 223, 223);
+}
+
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background: rgb(85, 85, 85);
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #00a2ff
+}
+
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #682773;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+

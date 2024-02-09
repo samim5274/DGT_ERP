@@ -1,0 +1,44 @@
+@media only screen and (max-width: 1200px) {
+    .card-body .btn{
+      padding: 0.2rem 0.5rem;
+      font-size: 1rem;
+    }
+    }
+    
+    @media only screen and (max-width: 1024px) {
+      
+    }
+    
+    @media only screen and (max-width: 991px) {
+      .card-body .btn{
+        font-size: 1rem;
+      }
+    }
+    
+    @media only screen and (max-width: 780px){
+      .carousel-item{
+        height: auto;
+    }
+    .card-body h2{
+      font-size: 11px;
+    }
+    }
+    
+    
+    @media only screen and (max-width: 710px)
+    {
+  
+    }
+    @media only screen and (max-width: 575px)
+    {
+      .card-body .btn{
+        padding: 0.5rem 4rem;
+        font-size: 1rem;
+      }
+    }
+  @media only screen and (max-width:468px)
+  {
+    .card-body .btn {
+      margin: 0.5rem;
+    }
+  }
