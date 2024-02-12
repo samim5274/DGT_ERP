@@ -296,19 +296,28 @@ if(isset($_POST['btnAssign']))
     $AbsentDeduct = ($BasicSalary/26)*$AbsentDay;
     $AbsentDeduct = round($AbsentDeduct,0);
 
-    // echo "Employee id: ".$Eid."/- Salary id: ".$SalaryId."/- Date: ".$date."/- MonthYear: ".$MonthYear."/- Overtime H : ".$Overtime."/- Overtime Money: ".$OvertimeMoney."/- Absent day: ".$AbsentDay."/- Absent money deduct: ".$AbsentDeduct."/- Basic salary: ".$BasicSalary."/- House Rent: ".$HouserRent."/- Medical cost : ".$MedicalCost."/- Transport : ".$Transport."/- VAT : ".$VAT."/- Provident found: ".$ProvidentFound."/-";
-
-    $sqlSalarySheetData = "INSERT INTO `tb_salarysheet`(`SalaryId`, `EId`, `Date`, `MonthYear`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDeductM`, `Advance`, `Bouns`) VALUES ('$SalaryId','$Eid','$date','$MonthYear','$Overtime','$OvertimeMoney','$AbsentDay','$AbsentDeduct','$Advance','$Bonus')";
-    $sqlSalarySheetDataResult = mysqli_query($conn,$sqlSalarySheetData);
-    if(!$sqlSalarySheetDataResult)
+    // check salary sheet creation for month
+    $sqlSalarySheetCheck = "SELECT * FROM `tb_salarysheet` WHERE SalaryId = '$SalaryId' AND EId = '$Eid' AND MonthYear = '$MonthYear'";
+    $sqlSalarySheetCheckResult = mysqli_query($conn,$sqlSalarySheetCheck);
+    if(mysqli_num_rows($sqlSalarySheetCheckResult) > 0)
     {
-        $ex = "Salary sheet creation fail. Please try again !";
+        $ex = "Salary sheet already created for the month of ".$MonthYear." and employee is ".$Eid." Please try to create another employees salary sheet. Thank you!";
         header("Location:salary?error=$ex");
     }
     else
     {
-        $ex = "Salary sheet creation successfully.";
-        header("Location:salary?error=$ex");
+        $sqlSalarySheetData = "INSERT INTO `tb_salarysheet`(`SalaryId`, `EId`, `Date`, `MonthYear`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDeductM`, `Advance`, `Bouns`) VALUES ('$SalaryId','$Eid','$date','$MonthYear','$Overtime','$OvertimeMoney','$AbsentDay','$AbsentDeduct','$Advance','$Bonus')";
+        $sqlSalarySheetDataResult = mysqli_query($conn,$sqlSalarySheetData);
+        if(!$sqlSalarySheetDataResult)
+        {
+            $ex = "Salary sheet creation fail. Please try again !";
+            header("Location:salary?error=$ex");
+        }
+        else
+        {
+            $ex = "Salary sheet creation successfully.";
+            header("Location:salary?error=$ex");
+        }
     }
 }
 
@@ -320,10 +329,12 @@ if(isset($_POST['btnMore']))
     if(isset($_GET['epId']))
     {
         $Eid = $_GET['epId'];
+        echo $Eid;
     }
     else
     {
         $Eid = '';
+        echo $Eid;
     }
 
     $MonthYear = date('Ym');
