@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 09, 2024 at 10:21 AM
+-- Generation Time: Feb 11, 2024 at 08:19 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -97,7 +97,9 @@ INSERT INTO `tb_banktobanktransectiondetail` (`Id`, `FromAccount`, `ToAccount`, 
 (18, 'DBBL348763', 'CBL4873639484', '2024-02-08', 500000, 14, ''),
 (19, 'FSIB937463836483', 'CBL4873639484', '2024-02-08', 1000000, 2, ''),
 (20, 'FSIB937463836483', 'CBL4873639484', '2024-02-08', 5000000, 18, ''),
-(21, 'CBL4873639484', 'DBBL348763', '2024-02-09', 1000000, 11, '');
+(21, 'CBL4873639484', 'DBBL348763', '2024-02-09', 1000000, 11, ''),
+(22, 'FSIB937463836483', 'CBL4873639484', '2024-02-10', 5000000, 18, ''),
+(23, 'CBL4873639484', 'DBBL348763', '2024-02-11', 500000, 18, '');
 
 -- --------------------------------------------------------
 
@@ -144,7 +146,11 @@ INSERT INTO `tb_dailyexpenses` (`Id`, `EId`, `Date`, `Amount`, `PurposeId`, `Rem
 (4, 2, '2024-02-08', 3000, 6, ''),
 (5, 15, '2024-02-08', 5000, 3, ''),
 (6, 16, '2024-02-08', 1200, 5, ''),
-(7, 11, '2024-02-09', 1200, 6, '');
+(7, 11, '2024-02-09', 1200, 6, ''),
+(8, 2, '2024-02-10', 450, 1, ''),
+(9, 11, '2024-02-10', 500, 2, ''),
+(10, 16, '2024-02-10', 1500, 6, ''),
+(11, 2, '2024-02-11', 5500, 3, '');
 
 -- --------------------------------------------------------
 
@@ -271,7 +277,15 @@ INSERT INTO `tb_dipositandwithdrawdetail` (`Id`, `AccountNumber`, `Amount`, `Dat
 (60, 'CBL4873639484', 10000, '2024-02-09', 1, 11, ''),
 (61, 'CBL4873639484', 12000, '2024-02-09', 2, 15, ''),
 (62, 'DBBL348763', 1000000, '2024-02-09', 1, 11, 'Bank to bank transfer diposit.'),
-(63, 'CBL4873639484', 1000000, '2024-02-09', 2, 11, 'Bank to bank transfer withdraw.');
+(63, 'CBL4873639484', 1000000, '2024-02-09', 2, 11, 'Bank to bank transfer withdraw.'),
+(64, 'CBL4873639484', 20000, '2024-02-10', 1, 15, ''),
+(65, 'FSIB937463836483', 10000, '2024-02-10', 2, 17, ''),
+(66, 'CBL4873639484', 5000000, '2024-02-10', 1, 18, 'Bank to bank transfer diposit.'),
+(67, 'FSIB937463836483', 5000000, '2024-02-10', 2, 18, 'Bank to bank transfer withdraw.'),
+(68, 'FSIB937463836483', 100000, '2024-02-11', 1, 14, ''),
+(69, 'CBL4873639484', 50000, '2024-02-11', 2, 2, ''),
+(70, 'DBBL348763', 500000, '2024-02-11', 1, 18, 'Bank to bank transfer diposit.'),
+(71, 'CBL4873639484', 500000, '2024-02-11', 2, 18, 'Bank to bank transfer withdraw.');
 
 -- --------------------------------------------------------
 
@@ -322,7 +336,8 @@ INSERT INTO `tb_employeeinfo` (`Id`, `E_Name`, `E_Designation`, `E_Username`, `E
 (15, 'Nayeem Zilani', 'Merchandiser', 'nayeem', '1980-05-05', 'Male', 'nayeem@deegautex.com', 'n', 1234567890, 1, 'Ali Ahmed', 'Begum', 'Mirpur, Dhaka', 'Mirpur, Dhaka', 1234567890, 'Bangladeshi', 'Married', 'Islam', 76543, 45, '2022-02-01', 'A+', 'IMG-65c32ce2821fb8.85141900.jpg', NULL, NULL, NULL),
 (16, 'Shakil Ahmed', 'Executive', 'shakil56', '1990-03-03', 'Male', 'shakil@deegautex.com', 's', 2345678, 1, 'Ahmed Ali', 'Begum', 'Uttara, Dhaka', 'Uttara, Dhaka', 23456789, 'Bangladeshi', 'Married', 'Islam', 2345678, 46, '2022-02-02', 'A+', 'IMG-65c32d58e521b7.06113097.jpg', NULL, NULL, NULL),
 (17, 'Maria ', 'Merchandiser', 'maria23', '1990-03-04', 'Female', 'maria@deegautex.com', 'm', 12345678, 1, 'Ali', 'Begum', 'Gulshan, Dhaka', 'Gulshan, Dhaka', 345678, 'Bangladeshi', 'Un-married', 'Hindu', 234567, 47, '2022-02-01', 'A+', 'IMG-65c32db7eb3e71.33401382.png', NULL, NULL, NULL),
-(18, 'Mizanur Rahman', 'Executive', 'mizan', '1997-06-10', 'Male', 'mizan@deegautex.com', 'm', 12345678, 1, 'Ahmed Ali', 'Begum', 'Uttara, Dhaka', 'Uttara, Dhaka', 123456789, 'Bangladeshi', 'Un-married', 'Islam', 765432, 56, '2023-07-01', 'A+', 'IMG-65c4908fa7a172.76777879.jpg', NULL, NULL, NULL);
+(18, 'Mizanur Rahman', 'Executive', 'mizan', '1997-06-10', 'Male', 'mizan@deegautex.com', 'm', 12345678, 1, 'Ahmed Ali', 'Begum', 'Uttara, Dhaka', 'Uttara, Dhaka', 123456789, 'Bangladeshi', 'Un-married', 'Islam', 765432, 56, '2023-07-01', 'A+', 'IMG-65c4908fa7a172.76777879.jpg', NULL, NULL, NULL),
+(19, 'Proshanto Shen', 'Manager', 'proshant', '1986-10-14', 'Male', 'proshant@deegautex.com', 'p', 123654987, 1, 'Mondol', 'Dash', 'Dhaka', 'Dhaka', 321654987, 'Bangladeshi', 'Married', 'Hindu', 32165487, 25, '2021-02-02', 'A+', 'IMG-65c910f60d0a17.35136736.jpg', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -502,7 +517,11 @@ INSERT INTO `tb_moneysentandreceived` (`Id`, `SEId`, `REId`, `date`, `Amount`, `
 (70, 1, 13, '2024-02-08', 1200, '', 1),
 (71, 16, 1, '2024-02-08', 500, '', 2),
 (72, 1, 2, '2024-02-09', 1000, '', 1),
-(73, 13, 1, '2024-02-09', 2500, '', 2);
+(73, 13, 1, '2024-02-09', 2500, '', 2),
+(74, 1, 2, '2024-02-10', 10000, '', 1),
+(75, 13, 1, '2024-02-10', 10000, '', 2),
+(76, 1, 15, '2024-02-11', 1000, '', 1),
+(77, 17, 1, '2024-02-11', 2500, '', 2);
 
 -- --------------------------------------------------------
 
@@ -583,8 +602,26 @@ CREATE TABLE `tb_salarysheet` (
   `Advance` int(11) DEFAULT NULL,
   `Remark` varchar(255) DEFAULT NULL,
   `Bonus` int(11) DEFAULT NULL,
+  `MonthYear` int(11) DEFAULT NULL,
   `TotalSalary` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_salarysheet`
+--
+
+INSERT INTO `tb_salarysheet` (`Id`, `Date`, `EId`, `BasicSalary`, `HouseRent`, `MedicalCost`, `Transport`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDedusctM`, `VAT`, `ProvidentFound`, `Advance`, `Remark`, `Bonus`, `MonthYear`, `TotalSalary`) VALUES
+(1, '2024-02-10', 1, 8000, 800, 800, 800, 24, 923, 2, 615, 400, 400, 2500, 'Salary done!', 1600, 202402, 9008),
+(2, '2024-02-10', 2, 15000, 3750, 3750, 3750, 26, 1875, 1, 577, 1050, 1050, 1000, 'Salary done!', 500, 202402, 24948),
+(4, '2024-02-10', 12, 80000, 56000, 56000, 56000, 0, 0, 0, 0, 12000, 12000, 10000, '', 0, 202402, 214000),
+(5, '2024-02-10', 13, 31000, 12400, 12400, 12400, 0, 0, 2, 2385, 2790, 2790, 5000, '', 1000, 202402, 56235),
+(6, '2024-02-10', 14, 45000, 22500, 22500, 22500, 0, 0, 2, 3462, 4500, 4500, 1000, '', 0, 202402, 99038),
+(7, '2024-02-10', 15, 50000, 25000, 25000, 25000, 0, 0, 1, 1923, 5000, 5000, 0, '', 0, 202402, 113077),
+(8, '2024-02-10', 16, 22000, 5500, 5500, 5500, 15, 1587, 0, 0, 1540, 1540, 1000, '', 1200, 202402, 37207),
+(9, '2024-02-10', 17, 28000, 8400, 8400, 8400, 18, 2423, 1, 1077, 2240, 2240, 3000, '', 700, 202402, 47766),
+(10, '2024-02-10', 18, 18500, 4625, 4625, 4625, 29, 2579, 0, 0, 1295, 1295, 1500, '', 850, 202402, 31714),
+(13, '2024-02-11', 13, 40000, 16000, 16000, 16000, 32, 6154, 2, 3077, 3600, 3600, 1500, '', 500, 202402, 82877),
+(14, '2024-02-11', 11, 28000, 8400, 8400, 8400, 24, 3231, 1, 1077, 2240, 2240, 5000, '', 500, 202402, 46374);
 
 -- --------------------------------------------------------
 
@@ -803,7 +840,7 @@ ALTER TABLE `tb_bankdetail`
 -- AUTO_INCREMENT for table `tb_banktobanktransectiondetail`
 --
 ALTER TABLE `tb_banktobanktransectiondetail`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `tb_catagoryinfo`
@@ -815,7 +852,7 @@ ALTER TABLE `tb_catagoryinfo`
 -- AUTO_INCREMENT for table `tb_dailyexpenses`
 --
 ALTER TABLE `tb_dailyexpenses`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tb_dasignation_info`
@@ -833,13 +870,13 @@ ALTER TABLE `tb_department`
 -- AUTO_INCREMENT for table `tb_dipositandwithdrawdetail`
 --
 ALTER TABLE `tb_dipositandwithdrawdetail`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT for table `tb_employeeinfo`
 --
 ALTER TABLE `tb_employeeinfo`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tb_evaluation`
@@ -857,7 +894,7 @@ ALTER TABLE `tb_mark`
 -- AUTO_INCREMENT for table `tb_moneysentandreceived`
 --
 ALTER TABLE `tb_moneysentandreceived`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
 
 --
 -- AUTO_INCREMENT for table `tb_productinfo`
@@ -875,7 +912,7 @@ ALTER TABLE `tb_purpose`
 -- AUTO_INCREMENT for table `tb_salarysheet`
 --
 ALTER TABLE `tb_salarysheet`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `tb_skill`
