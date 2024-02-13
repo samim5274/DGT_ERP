@@ -61,8 +61,9 @@ $toDate = date("Y-m-d");
 
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="#salary-section" onclick="closeNav()">Salary</a>
     <a href="#AssignNextMonth-section" onclick="closeNav()">Assign Next Month</a>
+    <a href="#salary-section" onclick="closeNav()">Salary Creation</a>    
+    <a href="#increment-section" onclick="closeNav()">Increment</a>    
 </div>
 
 
@@ -181,44 +182,10 @@ if(isset($_POST['btnSearch']))
 
 
 ?>
-    
 
-<!-- Assign for nest month section end -->
-
-
-
-<!-- Salary section start -->
-
-<section id="salary-section" class="bg-secondary text-light">
+<section id="Next-month-assign" class="bg-dark pt-4">
     <div class="container">
-        <div class="row">
-                <h3 class="text-center display-4 my-4">Salary Segmentation</h3>
-            <div class="col- mb-4">
-                <form action="salaryBK?id=<?php echo $Id;?>" method="POST">
-                    <div class="form-group">
-                        <label for="employee">Select Employee</label>
-                        <select name="cbxEmployeeSL" require class="form-control" id="employee">
-                            <?php 
-                                $sqlData = "SELECT * FROM `tb_employeeinfo` WHERE E_Status = 1";
-                                $sqlResult = mysqli_query($conn,$sqlData); ?>
-                            <option selected disabled>Select Employee</option>
-                            <?php while($row = mysqli_fetch_array($sqlResult)){?>
-                            <option value="<?php echo $row['Id']; ?>"><?php echo $row['E_Name']; ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
-                    <!-- basic salary input fild -->
-                    <div class="form-group">
-                        <label for="ammountSL">Enter Basic Salary *</label>
-                        <input type="number" name="txtBasicSalarySL" class="form-control" id="ammountSL" placeholder="Enter basic salary">
-                    </div>
-                    <button name="btnSalary" type="submit" class="button-30 mt-3">Salary</button>
-                    <button name="btnCancel" type="submit" class="button-30 mt-3">Cancel</button>
-                    <button name="btnFilter" type="submit" class="button-30 mt-3">Filter</button>
-                </form>
-            </div>
-        </div>
-        <div class="row  pb-4">            
+        <div class="row">            
             <div class="col">
 
                 <table class="table table-bordered table-dark text-center">
@@ -245,6 +212,7 @@ if(isset($_POST['btnSearch']))
                         <?php
                         $thisMonth = date("Ym");
                         $i=1;
+                        $result = 0;
                         $sqlSalarySheet = "SELECT * FROM `tb_salarysheet` WHERE MonthYear = '$thisMonth'";
                         $sqlSalarySheetResult = mysqli_query($conn,$sqlSalarySheet);
                         foreach($sqlSalarySheetResult AS $val)
@@ -305,34 +273,175 @@ if(isset($_POST['btnSearch']))
                             <td><?php echo "৳".$totalSalary."/-";?></td>
                         </tr>
 
-                        <?php    $i++;
+                        <?php 
+                            $result += $totalSalary;
+                            $i++;
+                        } 
+                        $sqlBasicSalary = "SELECT SUM(BasicSalary),SUM(HouseRent),SUM(MedicalCost),SUM(Transport),SUM(VAT),SUM(ProvedentFound) FROM tb_salaryinfo";
+                        $sqlBasicSalaryResult = mysqli_query($conn,$sqlBasicSalary);
+                        while($row = mysqli_fetch_array($sqlBasicSalaryResult))
+                        {
+                            $basic = $row['SUM(BasicSalary)'];
+                            $house = $row['SUM(HouseRent)'];
+                            $medical = $row['SUM(MedicalCost)'];
+                            $trans = $row['SUM(Transport)'];
+                            $vat = $row['SUM(VAT)'];
+                            $pbtf = $row['SUM(ProvedentFound)'];
+                        }
+                        $sqlSheet = "SELECT SUM(OvertimeH),SUM(OvertimeM),SUM(Bonus),SUM(AbsentDeductM),SUM(AbsentD),SUM(Advance) FROM tb_salarysheet WHERE MonthYear = '$thisMonth'";
+                        $sqlSheetResult = mysqli_query($conn,$sqlSheet);
+                        while($row = mysqli_fetch_array($sqlSheetResult))
+                        { 
+                            $OTH = $row['SUM(OvertimeH)']; 
+                            $OTM = $row['SUM(OvertimeM)']; 
+                            $BNS = $row['SUM(Bonus)']; 
+                            $ABDM = $row['SUM(AbsentDeductM)']; 
+                            $ABD = $row['SUM(AbsentD)']; 
+                            $AD = $row['SUM(Advance)']; 
                         }
                         ?>
-                        
+                        <tr class="table-secondary">
+                            <td>*</td>
+                            <td>Total :-</td>
+                            <td><?php echo $basic."/-";?></td>
+                            <td><?php echo $house."/-";?></td>
+                            <td><?php echo $medical."/-";?></td>
+                            <td><?php echo $trans."/-";?></td>
+                            <td><?php echo $vat."/-";?></td>
+                            <td><?php echo $pbtf."/-";?></td>
+
+                            <td><?php echo $OTH."/-";?></td>
+                            <td><?php echo $OTM."/-";?></td>
+                            <td><?php echo $ABD."/-";?></td>
+                            <td><?php echo $ABDM."/-";?></td>
+                            <td><?php echo $AD."/-";?></td>
+                            <td><?php echo $BNS."/-";?></td>
+                            <td><?php echo "৳".$result."/-";?></td>
+                        </tr>
                     </tbody>
                 </table>
-
-                
-            </div>
-
-             <!-- <div class="text-end">
-                <?php
-                    $sqlTotalAmount = "SELECT (SUM(OvertimeM)+SUM(Bonus))-(SUM(AbsentDeductM)+SUM(Advance)) FROM tb_salarysheet WHERE MonthYear = '$thisMonth' AND EId =  '$EPId'";
-                    $sqlToalAmountResult = mysqli_query($conn,$sqlTotalAmount);
-                    while($row = mysqli_fetch_array($sqlToalAmountResult))
-                    { 
-                        $result1 = $row['(SUM(OvertimeM)+SUM(Bonus))-(SUM(AbsentDeductM)+SUM(Advance))']; 
-                    }
-                    $sqlTotalAmount2 = "SELECT (SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound)) FROM tb_salaryinfo WHERE EId =  '$EPId'";
-                    $sqlTotalAmount2Result = mysqli_query($conn,$sqlTotalAmount2);
-                    while($val = mysqli_fetch_array($sqlTotalAmount2Result))
-                    { 
-                        $result2 = $val['(SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound))']; 
-                    }      
-                    echo $totalSalary = $result1+$result2;                    
-                    ?>
+            <!-- </div>
+                <div class="text-end text-light">
+                <h2><?php echo "Total Salary: ৳".$result."/-";?></h2>
             </div> -->
+        </div>
+    </div> 
+</section>
 
+<!-- Assign for nest month section end -->
+
+
+
+<!-- Salary section start -->
+
+<section id="salary-section" class="bg-secondary text-light">
+    <div class="container">
+        <div class="row">
+                <h3 class="text-center display-4 my-4">Main Salary Create Section</h3>
+            <div class="col- mb-4">
+                <form action="salaryBK?id=<?php echo $Id;?>" method="POST">
+                    <div class="form-group">
+                        <label for="employee">Select Employee</label>
+                        <select name="cbxEmployeeSL" require class="form-control" id="employee">
+                            <?php 
+                                $sqlData = "SELECT * FROM `tb_employeeinfo` WHERE E_Status = 1";
+                                $sqlResult = mysqli_query($conn,$sqlData); ?>
+                            <option selected disabled>Select Employee</option>
+                            <?php while($row = mysqli_fetch_array($sqlResult)){?>
+                            <option value="<?php echo $row['Id']; ?>"><?php echo $row['E_Name']; ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                    <!-- basic salary input fild -->
+                    <div class="form-group">
+                        <label for="ammountSL">Enter Basic Salary *</label>
+                        <input type="number" name="txtBasicSalarySL" class="form-control" id="ammountSL" placeholder="Enter basic salary">
+                    </div>
+                    <button name="btnSalary" type="submit" class="button-30 mt-3">Salary</button>
+                    <button name="btnCancel" type="submit" class="button-30 mt-3">Cancel</button>
+                    <button name="btnFilter" type="submit" class="button-30 mt-3">Filter</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <table class="table table-bordered text-light text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">SL</th>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Basic Salary</th>
+                        <th scope="col">House Rent</th>
+                        <th scope="col">Medical cost</th>
+                        <th scope="col">Transport</th>
+                        <th scope="col">VAT $</th>
+                        <th scope="col">Provident Found</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $i=1;
+                    $result = 0;
+                    $sqlSalaryInfo = "SELECT * FROM `tb_salaryinfo`";
+                    $sqlSalaryInfoResult = mysqli_query($conn,$sqlSalaryInfo);
+                    while($val = mysqli_fetch_array($sqlSalaryInfoResult))
+                    {?>
+                    <tr>
+                        <td><?php echo $i;?></td>
+                        <?php 
+                        $EPId = $val['EId'];
+                        $sqlEMP = "SELECT EMP.E_Name FROM `tb_employeeinfo` AS EMP WHERE Id = '$EPId'";
+                        $sqlEMPResult = mysqli_query($conn,$sqlEMP);
+                        foreach($sqlEMPResult AS $EM){?>
+                            <td><?php echo $EM['E_Name'];?></td>
+                        <?php }
+                        ?>
+                        <td><?php echo "৳".$val['BasicSalary'].'/-';?></td>
+                        <td><?php echo "৳".$val['HouseRent'].'/-';?></td>
+                        <td><?php echo "৳".$val['MedicalCost'].'/-';?></td>
+                        <td><?php echo "৳".$val['Transport'].'/-';?></td>
+                        <td><?php echo "৳".$val['VAT'].'/-';?></td>
+                        <td><?php echo "৳".$val['ProvedentFound'].'/-';?></td>
+                        <!-- calculate total salaty -->
+                        <?php
+                        $sqlTotalAmount2 = "SELECT (SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound)) FROM tb_salaryinfo WHERE EId = '$EPId'";
+                        $sqlTotalAmount2Result = mysqli_query($conn,$sqlTotalAmount2);
+                        while($val = mysqli_fetch_array($sqlTotalAmount2Result))
+                        { 
+                            $result2 = $val['(SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound))']; 
+                        }
+                        ?>
+                        <td><?php echo "৳".$result2;?></td>
+                    </tr>
+                    <?php 
+                    $result += $result2;
+                    $i++; 
+                    } 
+                    $sqlBasicSalary = "SELECT SUM(BasicSalary),SUM(HouseRent),SUM(MedicalCost),SUM(Transport),SUM(VAT),SUM(ProvedentFound) FROM tb_salaryinfo";
+                    $sqlBasicSalaryResult = mysqli_query($conn,$sqlBasicSalary);
+                    while($row = mysqli_fetch_array($sqlBasicSalaryResult))
+                    {
+                        $basic = $row['SUM(BasicSalary)'];
+                        $house = $row['SUM(HouseRent)'];
+                        $medical = $row['SUM(MedicalCost)'];
+                        $trans = $row['SUM(Transport)'];
+                        $vat = $row['SUM(VAT)'];
+                        $pbtf = $row['SUM(ProvedentFound)'];
+                    }
+                    ?>
+                    <tr class="table-dark text-light">
+                        <td>*</td>
+                        <td>Total Cost:-</td>
+                        <td><?php echo "৳".$basic.'/-';?></td>
+                        <td><?php echo "৳".$house.'/-';?></td>
+                        <td><?php echo "৳".$medical.'/-';?></td>
+                        <td><?php echo "৳".$trans.'/-';?></td>
+                        <td><?php echo "৳".$vat.'/-';?></td>
+                        <td><?php echo "৳".$pbtf.'/-';?></td>
+                        <td><?php echo "৳".$result.'/-';?></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>

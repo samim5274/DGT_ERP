@@ -284,6 +284,7 @@ if(isset($_POST['btnAssign']))
 
     $MonthYear = date('Ym');
     $date = date("Y-m-d");
+    $dateM = date("F");
     $Advance = $_POST['txtAdvanceSalaryASNM'];
     $Bonus = $_POST['txtBonusASNM'];
     $remark = $_POST['txtRemarkASNM'];
@@ -301,7 +302,7 @@ if(isset($_POST['btnAssign']))
     $sqlSalarySheetCheckResult = mysqli_query($conn,$sqlSalarySheetCheck);
     if(mysqli_num_rows($sqlSalarySheetCheckResult) > 0)
     {
-        $ex = "Salary sheet already created for the month of ".$MonthYear." and employee is ".$Eid." Please try to create another employees salary sheet. Thank you!";
+        $ex = "Salary sheet already created for the month of ".$dateM." this employee. Please try to create another employees salary sheet. Thank you!";
         header("Location:salary?error=$ex");
     }
     else
