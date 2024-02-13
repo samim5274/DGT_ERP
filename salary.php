@@ -218,77 +218,8 @@ if(isset($_POST['btnSearch']))
                 </form>
             </div>
         </div>
-        <div class="row">            
+        <div class="row  pb-4">            
             <div class="col">
-                <!-- <table class="table table-bordered table-dark text-center">
-                    <thead>
-                        <tr>
-                        <th scope="col">SL</th>
-                        <th scope="col">Employee</th>
-                        <th scope="col">Basic Salary</th>
-                        <th scope="col">House Rent</th>
-                        <th scope="col">Medical cost</th>
-                        <th scope="col">Transport</th>
-                        <th scope="col">Overtime (Houre)</th>
-                        <th scope="col">Overtime (Money)</th>
-                        <th scope="col">Absent Day</th>
-                        <th scope="col">Absent Deduct</th>
-                        <th scope="col">VAT %</th>
-                        <th scope="col">Provident Found</th>
-                        <th scope="col">Advance</th>
-                        <th scope="col">Bonus</th>
-                        <th scope="col">Total Salary</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $thisMonth = date("Ym");
-                        $sqlShow = "SELECT * FROM `tb_salarysheet` WHERE MonthYear = '$thisMonth'";
-                        $sqlShowResult = mysqli_query($conn,$sqlShow);
-                        $i=1;
-                        while($row = mysqli_fetch_array($sqlShowResult)){?>
-                        <tr>
-                            <th scope="row"><?php echo $i;?></th>
-
-                            <?php $re2Id = $row['EId'];
-                            $sql2Data = "SELECT EMP.E_Name FROM `tb_employeeinfo` AS EMP WHERE Id = '$re2Id'";
-                            $sql2Result = mysqli_query($conn,$sql2Data);
-                            foreach($sql2Result as $val){?>
-                                <td><?php echo $val['E_Name'];?></td>
-                            <?php } 
-                            
-                            $sqlDataSalaryInfo = "SELECT * FROM `tb_salaryinfo` WHERE EId = '$re2Id'";
-                            $sqlDataSalaryInfoResult = mysqli_query($conn,$sqlDataSalaryInfo);
-                            foreach($sqlDataSalaryInfoResult as $row){
-                                $SLId = $row['Id'];
-                                $bs = $row['BasicSalary'];
-                                $hr = $row['HouseRent'];
-                                $mc = $row['MedicalCost'];
-                                $tp = $row['Transport'];
-                                $vat = $row['VAT'];
-                                $pbtF = $row['ProvedentFound'];
-                            }
-
-                            // $sqlDataSalarySheet = "SELECT * FROM `tb_salarysheet` WHERE SalaryId = '$SLId' AND MonthYear = '$thisMonth'";
-                            ?>
-                            
-                            <td><?php echo '৳'.$bs.'/-';?></td>
-                            <td><?php echo '৳'.$hr.'/-';?></td>
-                            <td><?php echo '৳'.$mc.'/-';?></td>
-                            <td><?php echo '৳'.$tp.'/-';?></td>
-                            <td><?php echo '৳'.$row['OvertimeH'].'/-';?></td>
-                            <td><?php echo '৳'.$row['OvertimeM'].'/-';?></td>
-                            <td><?php echo '৳'.$row['AbsentD'].'/-';?></td>
-                            <td><?php echo '৳'.$row['AbsentDeductM'].'/-';?></td>
-                            <td><?php echo '৳'.$vat.'/-';?></td>
-                            <td><?php echo '৳'.$pbtF.'/-';?></td>
-                            <td><?php echo '৳'.$row['Advance'].'/-';?></td>
-                            <td><?php echo '৳'.$row['Bonus'].'/-';?></td>
-                            <td><?php echo '৳'.$row['TotalSalary'].'/-';?></td>
-                        </tr>
-                        <?php $i++; } ?>
-                    </tbody>
-                </table> -->
 
                 <table class="table table-bordered table-dark text-center">
                     <thead>
@@ -299,10 +230,10 @@ if(isset($_POST['btnSearch']))
                             <th scope="col">House Rent</th>
                             <th scope="col">Medical cost</th>
                             <th scope="col">Transport</th>
-                            <th scope="col">VAT %</th>
+                            <th scope="col">VAT $</th>
                             <th scope="col">Provident Found</th>
-                            <th scope="col">Overtime (Houre)</th>
-                            <th scope="col">Overtime (Money)</th>
+                            <th scope="col">Overtime (H)</th>
+                            <th scope="col">Overtime (M)</th>
                             <th scope="col">Absent Day</th>
                             <th scope="col">Absent Deduct</th>
                             <th scope="col">Advance</th>
@@ -312,40 +243,72 @@ if(isset($_POST['btnSearch']))
                     </thead>
                     <tbody>
                         <?php
-                        $sqlSalaryInfo = "SELECT * FROM `tb_salaryinfo`";
-                        $sqlSalaryInfoResult = mysqli_query($conn,$sqlSalaryInfo);
+                        $thisMonth = date("Ym");
                         $i=1;
-                        while($row = mysqli_fetch_array($sqlSalaryInfoResult))
+                        $sqlSalarySheet = "SELECT * FROM `tb_salarysheet` WHERE MonthYear = '$thisMonth'";
+                        $sqlSalarySheetResult = mysqli_query($conn,$sqlSalarySheet);
+                        foreach($sqlSalarySheetResult AS $val)
                         {?>
-                            <tr>
-                                <td><?php echo $i;?></td>
-                                <?php echo $SLID = $row['iD'];?>
-                                <td><?php echo $eid = $row['EId'];?></td>
-                                <td><?php echo $row['BasicSalary'];?></td>
-                                <td><?php echo $row['HouseRent'];?></td>
-                                <td><?php echo $row['MedicalCost'];?></td>
-                                <td><?php echo $row['Transport'];?></td>
-                                <td><?php echo $row['VAT'];?></td>
-                                <td><?php echo $row['ProvedentFound'];?></td>
-                                <?php
-                                $thisMonth = date("Ym");
-                                $sqlSalarySheet = "SELECT * FROM `tb_salarysheet` WHERE EId = '$eid' AND SalaryId = '$SLID' AND MonthYear = '$thisMonth'";
-                                $sqlSalarySheetResult = mysqli_query($conn,$sqlSalarySheet);
-                                foreach($sqlSalarySheetResult AS $val)
-                                {?>
-                                    
-                            <?php    }
-                                ?>
-                                <td><?php echo $val['OvertimeH'];?></td>
-                                <td><?php echo $val['OvertimeM'];?></td>
-                                <td><?php echo $val['AbsentD'];?></td>
-                                <td><?php echo $val['AbsentDeductM'];?></td>
-                                <td><?php echo $val['Advance'];?></td>
-                                <td><?php echo $val['Bonus'];?></td>
-                            </tr>
-                    <?php $i++; }
-                        
+
+                        <tr>
+                            <td><?php echo $i;?></td>
+                            <?php 
+                            $EPId = $val['EId'];
+                            $sqlEMP = "SELECT EMP.E_Name FROM `tb_employeeinfo` AS EMP WHERE Id = '$EPId'";
+                            $sqlEMPResult = mysqli_query($conn,$sqlEMP);
+                            foreach($sqlEMPResult AS $EM){?>
+                                <td><?php echo $EM['E_Name'];?></td>
+                            <?php }
+                            ?>
+                            
+                            
+                            <?php $slid = $val['SalaryId'];
+                            $sqlSalaryInfo = "SELECT * FROM `tb_salaryinfo` WHERE Id = '$slid'";
+                            $sqlSalaryInfoResult = mysqli_query($conn,$sqlSalaryInfo);
+                            while($row = mysqli_fetch_array($sqlSalaryInfoResult))
+                            {?>
+                            <td><?php echo $row['BasicSalary'];?></td>
+                            <td><?php echo $row['HouseRent'];?></td>
+                            <td><?php echo $row['MedicalCost'];?></td>
+                            <td><?php echo $row['Transport'];?></td>
+                            <td><?php echo $row['VAT'];?></td>
+                            <td><?php echo $row['ProvedentFound'];?></td>
+                        <?php    }
+                            ?>
+                            
+                            <td><?php echo $val['OvertimeH'];?></td>
+                            <td><?php echo $val['OvertimeM'];?></td>
+                            <td><?php echo $val['AbsentD'];?></td>
+                            <td><?php echo $val['AbsentDeductM'];?></td>
+                            <td><?php echo $val['Advance'];?></td>
+                            <td><?php echo $val['Bonus'];?></td>
+
+                            <?php
+                            // total salary calculate start
+
+                            $sqlTotalAmount = "SELECT (SUM(OvertimeM)+SUM(Bonus))-(SUM(AbsentDeductM)+SUM(Advance)) FROM tb_salarysheet WHERE MonthYear = '$thisMonth' AND EId = '$EPId'";
+                            $sqlToalAmountResult = mysqli_query($conn,$sqlTotalAmount);
+                            while($row = mysqli_fetch_array($sqlToalAmountResult))
+                            { 
+                                $result1 = $row['(SUM(OvertimeM)+SUM(Bonus))-(SUM(AbsentDeductM)+SUM(Advance))']; 
+                            }
+                            $sqlTotalAmount2 = "SELECT (SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound)) FROM tb_salaryinfo WHERE EId = '$EPId'";
+                            $sqlTotalAmount2Result = mysqli_query($conn,$sqlTotalAmount2);
+                            while($val = mysqli_fetch_array($sqlTotalAmount2Result))
+                            { 
+                                $result2 = $val['(SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound))']; 
+                            }        
+                            $totalSalary = $result1+$result2;     
+
+                            // total salary calculate end
+                            ?>
+                            <td><?php echo "৳".$totalSalary."/-";?></td>
+                        </tr>
+
+                        <?php    $i++;
+                        }
                         ?>
+                        
                     </tbody>
                 </table>
 
@@ -354,11 +317,19 @@ if(isset($_POST['btnSearch']))
 
              <!-- <div class="text-end">
                 <?php
-                    $sqlTotalAmount = "SELECT SUM(TotalSalary) FROM tb_salarysheet WHERE MonthYear = '$thisMonth'";
+                    $sqlTotalAmount = "SELECT (SUM(OvertimeM)+SUM(Bonus))-(SUM(AbsentDeductM)+SUM(Advance)) FROM tb_salarysheet WHERE MonthYear = '$thisMonth' AND EId =  '$EPId'";
                     $sqlToalAmountResult = mysqli_query($conn,$sqlTotalAmount);
-                    while($row = mysqli_fetch_array($sqlToalAmountResult)){?>
-                        <h2>Total Salary: <?php echo $row['SUM(TotalSalary)'];?>/-</h2>
-                <?php    }
+                    while($row = mysqli_fetch_array($sqlToalAmountResult))
+                    { 
+                        $result1 = $row['(SUM(OvertimeM)+SUM(Bonus))-(SUM(AbsentDeductM)+SUM(Advance))']; 
+                    }
+                    $sqlTotalAmount2 = "SELECT (SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound)) FROM tb_salaryinfo WHERE EId =  '$EPId'";
+                    $sqlTotalAmount2Result = mysqli_query($conn,$sqlTotalAmount2);
+                    while($val = mysqli_fetch_array($sqlTotalAmount2Result))
+                    { 
+                        $result2 = $val['(SUM(BasicSalary)+SUM(HouseRent)+SUM(MedicalCost)+SUM(Transport))-(SUM(VAT)+SUM(ProvedentFound))']; 
+                    }      
+                    echo $totalSalary = $result1+$result2;                    
                     ?>
             </div> -->
 
@@ -411,49 +382,3 @@ document.getElementById("mySidenav").style.width = "0";
 ?>
 
 
-<!-- overtime houre input fild
-<div class="form-group">
-    <label for="overtimeSL">Enter total overtime (H)</label>
-    <input type="number" name="txtOvertimeSL" class="form-control" id="overtimeSL" placeholder="Enter total overtime (Houre)">
-</div>
-Absent day input fild
-<div class="form-group">
-    <label for="absentDaySL">Total Absent day</label>
-    <input type="number" name="txtAbsentDaySL" class="form-control" id="absentDaySL" placeholder="Enter total absent day">
-</div>
-Advance salary input fild
-<div class="form-group">
-    <label for="advanceSalarySL">Total Advance Salary</label>
-    <input type="number" name="txtAdvanceSalarySL" class="form-control" id="advanceSalarySL" placeholder="Enter Advance salary">
-</div>
-Bonus input fild
-<div class="form-group">
-    <label for="bonusSL">Bonus Amount</label>
-    <input type="number" name="txtBonusSL" class="form-control" id="bonusSL" placeholder="Enter bonus">
-</div>
-<div class="form-group">
-    <label for="RemarkSL">Remark (Optional)</label>
-    <textarea class="form-control" name="txtRemarkSL" id="RemarkSL" rows="3" placeholder="Enter your Remark"></textarea>
-</div> -->
-
-<!-- foreach($sqlDataSalaryInfoResult as $row){
-    $SLId = $row['Id'];
-    $EID = $row['EId'];
-    $bs = $row['BasicSalary'];
-    $hr = $row['HouseRent'];
-    $mc = $row['MedicalCost'];
-    $tp = $row['Transport'];
-    $vat = $row['VAT'];
-    $pbtF = $row['ProvedentFound'];
-}
-$thisMonth = date("Ym");
-$sqlSalarySheet = "SELECT * FROM `tb_salarysheet` WHERE SalaryId = '$SLId' AND MonthYear = '$thisMonth'";
-$sqlSalarySheetResult = mysqli_query($conn,$sqlSalarySheet);
-foreach($sqlDataSalaryInfoResult as $row){
-    $OTH = $row['OvertimeH'];
-    $OTM = $row['OvertimeM'];
-    $ABD = $row['AbsentD'];
-    $ABDM = $row['AbsentDeductM'];
-    $AD = $row['Advance'];
-    $BNS = $row['Bonus'];
-} -->

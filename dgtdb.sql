@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 11, 2024 at 08:19 PM
+-- Generation Time: Feb 12, 2024 at 07:24 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -521,7 +521,8 @@ INSERT INTO `tb_moneysentandreceived` (`Id`, `SEId`, `REId`, `date`, `Amount`, `
 (74, 1, 2, '2024-02-10', 10000, '', 1),
 (75, 13, 1, '2024-02-10', 10000, '', 2),
 (76, 1, 15, '2024-02-11', 1000, '', 1),
-(77, 17, 1, '2024-02-11', 2500, '', 2);
+(77, 17, 1, '2024-02-11', 2500, '', 2),
+(78, 1, 2, '2024-02-12', 2400, '', 1);
 
 -- --------------------------------------------------------
 
@@ -582,10 +583,82 @@ INSERT INTO `tb_purpose` (`Id`, `P_Name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tb_salaryinfo`
+--
+
+CREATE TABLE `tb_salaryinfo` (
+  `Id` int(11) NOT NULL,
+  `EId` int(11) DEFAULT NULL,
+  `BasicSalary` int(11) DEFAULT NULL,
+  `HouseRent` int(11) DEFAULT NULL,
+  `MedicalCost` int(11) DEFAULT NULL,
+  `Transport` int(11) DEFAULT NULL,
+  `VAT` int(11) DEFAULT NULL,
+  `ProvedentFound` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_salaryinfo`
+--
+
+INSERT INTO `tb_salaryinfo` (`Id`, `EId`, `BasicSalary`, `HouseRent`, `MedicalCost`, `Transport`, `VAT`, `ProvedentFound`) VALUES
+(1, 1, 15000, 3750, 3750, 3750, 1050, 1050),
+(2, 2, 18000, 4500, 4500, 4500, 1260, 1260),
+(3, 11, 28000, 8400, 8400, 8400, 2240, 2240),
+(4, 12, 100000, 70000, 70000, 70000, 15000, 15000),
+(5, 13, 31000, 12400, 12400, 12400, 2790, 2790),
+(6, 14, 45000, 22500, 22500, 22500, 4500, 4500),
+(7, 15, 70000, 49000, 49000, 49000, 10500, 10500),
+(8, 16, 22000, 5500, 5500, 5500, 1540, 1540),
+(9, 17, 35000, 14000, 14000, 14000, 3150, 3150),
+(10, 18, 18500, 4625, 4625, 4625, 1295, 1295),
+(12, 19, 120000, 0, 0, 0, 18000, 18000);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tb_salarysheet`
 --
 
 CREATE TABLE `tb_salarysheet` (
+  `Id` int(11) NOT NULL,
+  `SalaryId` int(11) DEFAULT NULL,
+  `EId` int(11) DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  `MonthYear` varchar(255) DEFAULT NULL,
+  `OvertimeH` int(11) DEFAULT NULL,
+  `OvertimeM` int(11) DEFAULT NULL,
+  `AbsentD` int(11) DEFAULT NULL,
+  `AbsentDeductM` int(11) DEFAULT NULL,
+  `Advance` int(11) DEFAULT NULL,
+  `Bonus` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tb_salarysheet`
+--
+
+INSERT INTO `tb_salarysheet` (`Id`, `SalaryId`, `EId`, `Date`, `MonthYear`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDeductM`, `Advance`, `Bonus`) VALUES
+(17, 2, 2, '2024-02-12', '202402', 2, 173, 2, 1385, 2, 2),
+(18, 3, 11, '2024-02-12', '202402', 3, 404, 3, 3231, 3, 3),
+(19, 4, 12, '2024-02-12', '202402', 4, 1923, 4, 15385, 4, 4),
+(20, 5, 13, '2024-02-12', '202402', 2, 298, 2, 2385, 2, 2),
+(21, 6, 14, '2024-02-12', '202402', 4, 865, 2, 3462, 1, 0),
+(22, 7, 15, '2024-02-12', '202402', 2, 673, 2, 5385, 2, 2),
+(23, 8, 16, '2024-02-12', '202402', 2, 212, 1, 846, 1, 1),
+(24, 9, 17, '2024-02-12', '202402', 3, 505, 3, 4038, 2, 1),
+(25, 10, 18, '2024-02-12', '202402', 5, 445, 1, 712, 2, 2),
+(26, 12, 19, '2024-02-12', '202402', 2, 1154, 2, 9231, 2, 2),
+(27, 1, 1, '2024-02-12', '202402', 24, 1731, 3, 1731, 5000, 3000),
+(28, 2, 2, '2024-03-01', '202403', 48, 4154, 1, 692, 2500, 1500);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_salarysheet_old`
+--
+
+CREATE TABLE `tb_salarysheet_old` (
   `Id` int(11) NOT NULL,
   `Date` date DEFAULT NULL,
   `EId` int(11) DEFAULT NULL,
@@ -607,21 +680,21 @@ CREATE TABLE `tb_salarysheet` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `tb_salarysheet`
+-- Dumping data for table `tb_salarysheet_old`
 --
 
-INSERT INTO `tb_salarysheet` (`Id`, `Date`, `EId`, `BasicSalary`, `HouseRent`, `MedicalCost`, `Transport`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDedusctM`, `VAT`, `ProvidentFound`, `Advance`, `Remark`, `Bonus`, `MonthYear`, `TotalSalary`) VALUES
+INSERT INTO `tb_salarysheet_old` (`Id`, `Date`, `EId`, `BasicSalary`, `HouseRent`, `MedicalCost`, `Transport`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDedusctM`, `VAT`, `ProvidentFound`, `Advance`, `Remark`, `Bonus`, `MonthYear`, `TotalSalary`) VALUES
 (1, '2024-02-10', 1, 8000, 800, 800, 800, 24, 923, 2, 615, 400, 400, 2500, 'Salary done!', 1600, 202402, 9008),
 (2, '2024-02-10', 2, 15000, 3750, 3750, 3750, 26, 1875, 1, 577, 1050, 1050, 1000, 'Salary done!', 500, 202402, 24948),
 (4, '2024-02-10', 12, 80000, 56000, 56000, 56000, 0, 0, 0, 0, 12000, 12000, 10000, '', 0, 202402, 214000),
-(5, '2024-02-10', 13, 31000, 12400, 12400, 12400, 0, 0, 2, 2385, 2790, 2790, 5000, '', 1000, 202402, 56235),
 (6, '2024-02-10', 14, 45000, 22500, 22500, 22500, 0, 0, 2, 3462, 4500, 4500, 1000, '', 0, 202402, 99038),
 (7, '2024-02-10', 15, 50000, 25000, 25000, 25000, 0, 0, 1, 1923, 5000, 5000, 0, '', 0, 202402, 113077),
 (8, '2024-02-10', 16, 22000, 5500, 5500, 5500, 15, 1587, 0, 0, 1540, 1540, 1000, '', 1200, 202402, 37207),
 (9, '2024-02-10', 17, 28000, 8400, 8400, 8400, 18, 2423, 1, 1077, 2240, 2240, 3000, '', 700, 202402, 47766),
 (10, '2024-02-10', 18, 18500, 4625, 4625, 4625, 29, 2579, 0, 0, 1295, 1295, 1500, '', 850, 202402, 31714),
 (13, '2024-02-11', 13, 40000, 16000, 16000, 16000, 32, 6154, 2, 3077, 3600, 3600, 1500, '', 500, 202402, 82877),
-(14, '2024-02-11', 11, 28000, 8400, 8400, 8400, 24, 3231, 1, 1077, 2240, 2240, 5000, '', 500, 202402, 46374);
+(14, '2024-02-11', 11, 28000, 8400, 8400, 8400, 24, 3231, 1, 1077, 2240, 2240, 5000, '', 500, 202402, 46374),
+(15, '2024-02-12', 19, 25000, 6250, 6250, 6250, 2, 240, 2, 1923, 1750, 1750, 2000, '', 2000, 202402, 38567);
 
 -- --------------------------------------------------------
 
@@ -797,9 +870,21 @@ ALTER TABLE `tb_purpose`
   ADD PRIMARY KEY (`Id`);
 
 --
+-- Indexes for table `tb_salaryinfo`
+--
+ALTER TABLE `tb_salaryinfo`
+  ADD PRIMARY KEY (`Id`);
+
+--
 -- Indexes for table `tb_salarysheet`
 --
 ALTER TABLE `tb_salarysheet`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- Indexes for table `tb_salarysheet_old`
+--
+ALTER TABLE `tb_salarysheet_old`
   ADD PRIMARY KEY (`Id`);
 
 --
@@ -894,7 +979,7 @@ ALTER TABLE `tb_mark`
 -- AUTO_INCREMENT for table `tb_moneysentandreceived`
 --
 ALTER TABLE `tb_moneysentandreceived`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=78;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
 
 --
 -- AUTO_INCREMENT for table `tb_productinfo`
@@ -909,10 +994,22 @@ ALTER TABLE `tb_purpose`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `tb_salaryinfo`
+--
+ALTER TABLE `tb_salaryinfo`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `tb_salarysheet`
 --
 ALTER TABLE `tb_salarysheet`
-  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT for table `tb_salarysheet_old`
+--
+ALTER TABLE `tb_salarysheet_old`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tb_skill`

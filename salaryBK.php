@@ -306,7 +306,7 @@ if(isset($_POST['btnAssign']))
     }
     else
     {
-        $sqlSalarySheetData = "INSERT INTO `tb_salarysheet`(`SalaryId`, `EId`, `Date`, `MonthYear`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDeductM`, `Advance`, `Bouns`) VALUES ('$SalaryId','$Eid','$date','$MonthYear','$Overtime','$OvertimeMoney','$AbsentDay','$AbsentDeduct','$Advance','$Bonus')";
+        $sqlSalarySheetData = "INSERT INTO `tb_salarysheet`(`SalaryId`, `EId`, `Date`, `MonthYear`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDeductM`, `Advance`, `Bonus`) VALUES ('$SalaryId','$Eid','$date','$MonthYear','$Overtime','$OvertimeMoney','$AbsentDay','$AbsentDeduct','$Advance','$Bonus')";
         $sqlSalarySheetDataResult = mysqli_query($conn,$sqlSalarySheetData);
         if(!$sqlSalarySheetDataResult)
         {

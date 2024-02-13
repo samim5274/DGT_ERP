@@ -47,6 +47,11 @@
     overflow: auto;
   }
   
+  .overflow-auto
+  {
+    height: 26rem;
+    overflow: auto;
+  }
 
   @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
