@@ -220,7 +220,8 @@
                                     <td><?php echo $diposit = '৳ '.$row['SUM(Amount)'].'/-';?></td>
                                     <td><?php echo $withdraw = '৳ '.$row2['SUM(Amount)'].'/-';?></td>
                                     <?php $row['SUM(Amount)'] - $row2['SUM(Amount)'];?>
-                                    <td><?php echo '৳ '.$row['SUM(Amount)'] - $row2['SUM(Amount)'].'/-';?></td>
+                                    <?php $tt = $row['SUM(Amount)'] - $row2['SUM(Amount)'];?>
+                                    <td><?php echo '৳ '.$tt.'/-';?></td>
                                 </tr>
                                 <?php $i++; } ?>
                             </tbody>
