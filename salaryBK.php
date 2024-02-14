@@ -384,4 +384,130 @@ if(isset($_POST['btnMore']))
 }
 
 
+if(isset($_POST['btnIncrease']))
+{
+    function updateSalary($IBs,$hRent,$mCost,$tport,$vt,$PbtFd,$INCM)
+    {
+        global $conn;
+        $IncrementD = date("Y-m-d");
+        if(isset($_GET['epId']))
+        {
+            $Eid = $_GET['epId'];
+        }
+        else
+        {
+            $Eid = '';
+        }
+        $updateSalary = "UPDATE `tb_salaryinfo` SET`BasicSalary`='$IBs',`HouseRent`='$hRent',`MedicalCost`='$mCost',`Transport`='$tport',`VAT`='$vt',`ProvedentFound`='$PbtFd',`IncrementDate`='$IncrementD' WHERE EId = '$Eid'";
+        $updateSalaryResult = mysqli_query($conn,$updateSalary);
+        if(!$updateSalaryResult)
+        {
+            $ex = "Salary Incrementation has been fail. Please try again !";
+            header("Location:salary?error=$ex");
+        }
+        else
+        {
+            $sqlIND = "INSERT INTO `tb_salaryincrementdetail`(`EId`, `Date`, `IncrementAmount`) VALUES ('$Eid','$IncrementD','$INCM')";
+            $sqlINDR = mysqli_Query($conn,$sqlIND);
+            $ex = 'Salary In-crementation successfully.';
+            header("Location:salary?error=$ex");
+        }
+    }
+
+    $increaseAmount = $_POST['txtIncreaseM'];
+    if(isset($_GET['epId']))
+    {
+        $Eid = $_GET['epId'];
+    }
+    else
+    {
+        $Eid = '';
+    }
+    // find employee
+    $sqlFindEmp = "SELECT * FROM `tb_employeeinfo` WHERE Id = '$Eid'";
+    $sqlFindEmpResult = mysqli_query($conn,$sqlFindEmp);
+    if(mysqli_num_rows($sqlFindEmpResult) > 0)
+    {
+        foreach($sqlFindEmpResult as $row)
+        {
+            $row['E_Name'];
+        }
+    }    
+    // find basic salary
+    $sqlFindBC = "SELECT * FROM `tb_salaryinfo` WHERE EId = '$Eid'";
+    $sqlFindBCResult = mysqli_query($conn,$sqlFindBC);
+    if(mysqli_num_rows($sqlFindBCResult) > 0)
+    {
+        foreach($sqlFindBCResult as $row)
+        {
+            $mainBS = $row['BasicSalary'];
+            $mainHR = $row['HouseRent'];
+            $mainMC = $row['MedicalCost'];
+            $mainTS = $row['Transport'];
+            $mainVAT = $row['VAT'];
+            $mainPBTF = $row['ProvedentFound'];
+        }
+    }
+
+    $InBs = $mainBS + $increaseAmount;
+    switch($InBs)
+        {
+            case $InBs <= 10000:
+                $houseRent = ((110*$InBs)/100)-$InBs;
+                $medicalCost = ((110*$InBs)/100)-$InBs;
+                $transport = ((110*$InBs)/100)-$InBs;
+                $VAT = ((105*$InBs)/100)-$InBs;
+                $PbtFound = ((105*$InBs)/100)-$InBs;
+                updateSalary($InBs,$houseRent,$medicalCost,$transport,$VAT,$PbtFound,$increaseAmount);
+                break;
+            case $InBs <= 25000:
+                $houseRent = ((125*$InBs)/100)-$InBs;
+                $medicalCost = ((125*$InBs)/100)-$InBs;
+                $transport = ((125*$InBs)/100)-$InBs;
+                $VAT = ((105*$InBs)/100)-$InBs;
+                $PbtFound = ((105*$InBs)/100)-$InBs;
+                updateSalary($InBs,$houseRent,$medicalCost,$transport,$VAT,$PbtFound,$increaseAmount);
+                break;
+            case $InBs <= 30000:
+                $houseRent = ((130*$InBs)/100)-$InBs;
+                $medicalCost = ((130*$InBs)/100)-$InBs;
+                $transport = ((130*$InBs)/100)-$InBs;
+                $VAT = ((105*$InBs)/100)-$InBs;
+                $PbtFound = ((105*$InBs)/100)-$InBs;
+                updateSalary($InBs,$houseRent,$medicalCost,$transport,$VAT,$PbtFound,$increaseAmount);
+                break;
+            case $InBs <= 40000:
+                $houseRent = ((140*$InBs)/100)-$InBs;
+                $medicalCost = ((140*$InBs)/100)-$InBs;
+                $transport = ((140*$InBs)/100)-$InBs;
+                $VAT = ((110*$InBs)/100)-$InBs;
+                $PbtFound = ((110*$InBs)/100)-$InBs;
+                updateSalary($InBs,$houseRent,$medicalCost,$transport,$VAT,$PbtFound,$increaseAmount);
+                break;
+            case $InBs <= 50000:
+                $houseRent = ((150*$InBs)/100)-$InBs;
+                $medicalCost = ((150*$InBs)/100)-$InBs;
+                $transport = ((150*$InBs)/100)-$InBs;
+                $VAT = ((112*$InBs)/100)-$InBs;
+                $PbtFound = ((112*$InBs)/100)-$InBs;
+                updateSalary($InBs,$houseRent,$medicalCost,$transport,$VAT,$PbtFound,$increaseAmount);
+                break;
+            case $InBs <= 100000:
+                $houseRent = ((170*$InBs)/100)-$InBs;
+                $medicalCost = ((170*$InBs)/100)-$InBs;
+                $transport = ((170*$InBs)/100)-$InBs;
+                $VAT = ((115*$InBs)/100)-$InBs;
+                $PbtFound = ((115*$InBs)/100)-$InBs;
+                updateSalary($InBs,$houseRent,$medicalCost,$transport,$VAT,$PbtFound,$increaseAmount);
+                break;
+            default:
+                $houseRent = 0;
+                $medicalCost = 0;
+                $transport = 0;
+                $VAT = ((115*$BasicSalary)/100)-$BasicSalary;
+                $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
+                updateSalary($InBs,$houseRent,$medicalCost,$transport,$VAT,$PbtFound,$increaseAmount);
+        }
+}
+
 ?>

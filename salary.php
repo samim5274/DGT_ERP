@@ -63,11 +63,112 @@ $toDate = date("Y-m-d");
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
     <a href="#AssignNextMonth-section" onclick="closeNav()">Assign Next Month</a>
     <a href="#salary-section" onclick="closeNav()">Salary Creation</a>    
-    <a href="#increment-section" onclick="closeNav()">Increment</a>    
+    <a href="#increment-section" onclick="closeNav()">Increment</a>   
+    <a href="#TotalSalaryList-section" onclick="closeNav()">Total Salary List</a>    
 </div>
 
 
 <!-- dashboard section end -->
+
+
+<!-- Salary Increment Section start -->
+
+<section id="increment-section" class="bg-secondary py-4 text-light">
+    <div class="container">
+        <div class="row">
+            <h3 class="text-center text-light display-4 my-4">Salary In-crement Section</h3>
+            <form action="" method="POST">
+                    <div class="wrapper">
+                        <div class="row">
+                            <label class="labels" for="designation">Select employee for the Salary Increment</label><hr>
+                            <div class="col-md-10">
+                                <select name="cbxEmployeeASNM" class="form-control" id="designation">
+                                    <?php 
+                                        $sqlData = "SELECT * FROM tb_employeeinfo";
+                                        $sqlResult = mysqli_query($conn,$sqlData); ?>
+                                    <option selected disabled>Select Employee</option>
+                                    <?php while($row = mysqli_fetch_array($sqlResult)){?>
+                                    <option value="<?php echo $row['Id']; ?>"><?php echo $row['E_Name']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button name="btnFind" type="submit" class="button-30">Find Employess</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+</section>
+
+<?php
+
+if(isset($_POST['btnFind']))
+{
+    if(isset($_POST['cbxEmployeeASNM']))
+    {
+        $EMPId = $_POST['cbxEmployeeASNM'];
+    }
+    else
+    {
+        $EMPId = '';
+    }
+    if(!$EMPId)
+    {
+        $error = 'Employee not selected. Please select Employee name and try again.';?>
+        <p class="error text-center text-dark mark"><?php echo $error; ?></p><?php
+    }
+    else
+    {
+        $sqlData = "SELECT * FROM tb_employeeinfo WHERE Id = '$EMPId'";
+        $sqlResult = mysqli_query($conn,$sqlData);
+        foreach($sqlResult as $val){ ?>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6  py-4">
+                    <div class="card">
+                        <a href="evaluationMarkSubmite?id=<?php echo $val['Id'];?>">
+                            <img src="P_Pic/<?php echo $val['E_Image'];?>" class="img-fluid card-img-top" alt="Photo loading..." />
+                        </a>
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h4><?php echo $val['E_Name'];?> (<small class="text-muted"><?php echo $val['E_BloodGroup'];?></small>)</h4>
+                                <small class="text-muted"><?php echo $val['E_Designation'];?></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 col-md-8 col-sm-6 py-4">
+                    <form action="salaryBK?epId=<?php echo $EMPId;?>" method="POST">
+                        <!-- Increase amount -->
+                        <div class="form-group">
+                            <label for="IncreaseM">Enter ( <?php echo $val['E_Name'];?> ) Total Increase amount</label>
+                            <input type="number" name="txtIncreaseM" required class="form-control" id="IncreaseM" placeholder="Enter total Increase amount">
+                        </div>
+                        <div class="form-group">
+                            <label for="RemarkIS">Remark (Optional)</label>
+                            <textarea class="form-control" name="txtRemarkIS" id="RemarkIS" rows="3" placeholder="Enter your Remark"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button name="btnIncrease" type="submit" class="button-30 mt-3">Increase</button>
+                            <button name="btnCancel" type="submit" class="button-30 mt-3">Cancel</button>
+                            <button name="btnMore" type="submit" class="button-30 mt-3">More</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    <?php   }
+    } 
+}
+
+
+?>
+
+<!-- Salary Increment Section end -->
 
 
 
@@ -416,7 +517,7 @@ if(isset($_POST['btnSearch']))
 <!-- Total salary sheet start -->
 
 
-<section id="Next-month-assign" class="bg-dark pt-4">
+<section id="TotalSalaryList-section" class="bg-dark pt-4">
     <div class="container">
         <div class="row">            
             <div class="col">

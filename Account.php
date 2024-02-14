@@ -64,9 +64,6 @@ $toDate = date("Y/m/d");
     <a href="#bank-diposit" onclick="closeNav()">Bank Diposit</a>
     <a href="#bank-withdraw" onclick="closeNav()">Bank Withdraw</a>
     <a href="#bank-to-bank" onclick="closeNav()">Bank to Bant-transfer</a>
-    <a href="#" onclick="closeNav()">Bank to Other</a>
-    <a href="#" onclick="closeNav()">Loan Give</a>
-    <a href="#" onclick="closeNav()">Loan Back</a>
     <a href="salary" onclick="closeNav()">Salary</a>
     <a href="#daily-expenses" onclick="closeNav()">Expenses</a>
 </div>
