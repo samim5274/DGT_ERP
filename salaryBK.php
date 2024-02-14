@@ -16,141 +16,149 @@ else
 if(isset($_POST['btnSalaryOld']))
 {
     $employee = $_POST['cbxEmployeeSL'];
-    $sqlFilter = "SELECT * FROM tb_salarysheet WHERE EId = '$employee'";
-    $sqlFilterResult = mysqli_query($conn, $sqlFilter);
-    if(mysqli_num_rows($sqlFilterResult) > 0)
+    if(empty($employee))
     {
-        $ex = "This Employee are salary already created! You don't create salary for the employee. Thank you !";
-        header("Location:salary?error=$ex");        
+        $ex = 'Employee are not selected. Please select employess and try again. Thank you!';
+        header("Location:salary?error=$ex");
     }
     else
-    {     
-        function calculateSalary($epid,$bs,$hr,$mc,$tp,$ot,$otm,$abd,$abm,$vt,$pdtf,$ad,$rmk,$bns,$d)
+    {
+        $sqlFilter = "SELECT * FROM tb_salarysheet WHERE EId = '$employee'";
+        $sqlFilterResult = mysqli_query($conn, $sqlFilter);
+        if(mysqli_num_rows($sqlFilterResult) > 0)
         {
-            $totalSalary = ($bs+$hr+$mc+$tp+$otm+$bns) - ($abm+$vt+$pdtf+$ad);
-            global $conn;   
-            $date2 = date("Y-m-d");
-            $sqlInsertSalary = "INSERT INTO `tb_salarysheet`(`Date`,`EId`, `BasicSalary`, `HouseRent`, `MedicalCost`, `Transport`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDedusctM`, `VAT`, `ProvidentFound`, `Advance`, `Remark`, `Bonus`,`MonthYear`,`TotalSalary`) VALUES ('$date2','$epid','$bs','$hr','$mc','$tp','$ot','$otm','$abd','$abm','$vt','$pdtf','$ad','$rmk','$bns','$d','$totalSalary')";
-            $sqlInSalaryResult = mysqli_query($conn, $sqlInsertSalary);
-            if(!$sqlInSalaryResult)
-            {
-                $ex = "Salary transection fail. Please try again !";
-                header("Location:salary?error=$ex");
-            }
-            else
-            {
-                $ex = 'salary transection successfully. Here is date: '.$date2.' and Salary: '.$totalSalary.'/-';
-                header("Location:salary?error=$ex");
-            }
+            $ex = "This Employee are salary already created! You don't create salary for the employee. Thank you !";
+            header("Location:salary?error=$ex");        
         }
+        else
+        {     
+            function calculateSalary($epid,$bs,$hr,$mc,$tp,$ot,$otm,$abd,$abm,$vt,$pdtf,$ad,$rmk,$bns,$d)
+            {
+                $totalSalary = ($bs+$hr+$mc+$tp+$otm+$bns) - ($abm+$vt+$pdtf+$ad);
+                global $conn;   
+                $date2 = date("Y-m-d");
+                $sqlInsertSalary = "INSERT INTO `tb_salarysheet`(`Date`,`EId`, `BasicSalary`, `HouseRent`, `MedicalCost`, `Transport`, `OvertimeH`, `OvertimeM`, `AbsentD`, `AbsentDedusctM`, `VAT`, `ProvidentFound`, `Advance`, `Remark`, `Bonus`,`MonthYear`,`TotalSalary`) VALUES ('$date2','$epid','$bs','$hr','$mc','$tp','$ot','$otm','$abd','$abm','$vt','$pdtf','$ad','$rmk','$bns','$d','$totalSalary')";
+                $sqlInSalaryResult = mysqli_query($conn, $sqlInsertSalary);
+                if(!$sqlInSalaryResult)
+                {
+                    $ex = "Salary transection fail. Please try again !";
+                    header("Location:salary?error=$ex");
+                }
+                else
+                {
+                    $ex = 'salary transection successfully. Here is date: '.$date2.' and Salary: '.$totalSalary.'/-';
+                    header("Location:salary?error=$ex");
+                }
+            }
 
-        $date = date('Ym'); 
-        $Eid = $_POST['cbxEmployeeSL'];
-        $BasicSalary = $_POST['txtBasicSalarySL'];
-        $Advance = $_POST['txtAdvanceSalarySL'];
-        $Bonus = $_POST['txtBonusSL'];
-        $remark = $_POST['txtRemarkSL'];
+            $date = date('Ym'); 
+            $Eid = $_POST['cbxEmployeeSL'];
+            $BasicSalary = $_POST['txtBasicSalarySL'];
+            $Advance = $_POST['txtAdvanceSalarySL'];
+            $Bonus = $_POST['txtBonusSL'];
+            $remark = $_POST['txtRemarkSL'];
 
-        $Overtime = $_POST['txtOvertimeSL'];
-        $OvertimeMoney = (($BasicSalary/26)/8)*$Overtime;
-        $OvertimeMoney = round($OvertimeMoney,0);
-            //echo "Total overtime houser ".$Overtime."h total amount is: ".$OvertimeMoney."/- ";
+            $Overtime = $_POST['txtOvertimeSL'];
+            $OvertimeMoney = (($BasicSalary/26)/8)*$Overtime;
+            $OvertimeMoney = round($OvertimeMoney,0);
+                //echo "Total overtime houser ".$Overtime."h total amount is: ".$OvertimeMoney."/- ";
 
-        $AbsentDay = $_POST['txtAbsentDaySL'];
-        $AbsentDeduct = ($BasicSalary/26)*$AbsentDay;
-        $AbsentDeduct = round($AbsentDeduct,0);
-            //echo "Absent Deduct for ".$AbsentDay." days total amount is: ".$AbsentDeduct."/- ";
+            $AbsentDay = $_POST['txtAbsentDaySL'];
+            $AbsentDeduct = ($BasicSalary/26)*$AbsentDay;
+            $AbsentDeduct = round($AbsentDeduct,0);
+                //echo "Absent Deduct for ".$AbsentDay." days total amount is: ".$AbsentDeduct."/- ";
 
-        switch($BasicSalary)
-        {
-            case $BasicSalary <= 10000:
-                $houseRent = ((110*$BasicSalary)/100)-$BasicSalary;
-                    //echo "House Rent is 10%: ".$houseRent.'/-  ';
-                $medicalCost = ((110*$BasicSalary)/100)-$BasicSalary;
-                    //echo " Medical cost is 10%: ".$medicalCost.'/-  ';
-                $transport = ((110*$BasicSalary)/100)-$BasicSalary;
-                    //echo " Transport cost is 10%: ".$transport.'/-  ';
-                $VAT = ((105*$BasicSalary)/100)-$BasicSalary;
-                    //echo " VAT is 5%: ".$VAT.'/-  ';
-                $PbtFound = ((105*$BasicSalary)/100)-$BasicSalary;
-                    //echo " Provident found is 5%: ".$PbtFound.'/-  ';
-                //function call
-                calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
-                break;
-            case $BasicSalary <= 25000:
-                $houseRent = ((125*$BasicSalary)/100)-$BasicSalary;
-                    // echo "House Rent is 25%: ".$houseRent.'/-  ';
-                $medicalCost = ((125*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Medical cost is 25%: ".$medicalCost.'/-  ';
-                $transport = ((125*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Transport cost is 25%: ".$transport.'/-  ';
-                $VAT = ((107*$BasicSalary)/100)-$BasicSalary;
-                    // echo " VAT is 7%: ".$VAT.'/-  ';
-                $PbtFound = ((107*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Provident found is 7%: ".$PbtFound.'/-  ';
-                //function call
-                calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
-                break;
-            case $BasicSalary <= 30000:
-                $houseRent = ((130*$BasicSalary)/100)-$BasicSalary;
-                    // echo "House Rent is 30%: ".$houseRent.'/-  ';
-                $medicalCost = ((130*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Medical cost is 30%: ".$medicalCost.'/-  ';
-                $transport = ((130*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Transport cost is 30%: ".$transport.'/-  ';
-                $VAT = ((108*$BasicSalary)/100)-$BasicSalary;
-                    // echo " VAT is 8%: ".$VAT.'/-  ';
-                $PbtFound = ((108*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Provident found is 8%: ".$PbtFound.'/-  ';
-                //function call
-                calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
-                break;
-            case $BasicSalary <= 40000:
-                $houseRent = ((140*$BasicSalary)/100)-$BasicSalary;
-                    // echo "House Rent is 40%: ".$houseRent.'/-  ';
-                $medicalCost = ((140*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Medical cost is 40%: ".$medicalCost.'/-  ';
-                $transport = ((140*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Transport cost is 40%: ".$transport.'/-  ';
-                $VAT = ((109*$BasicSalary)/100)-$BasicSalary;
-                    // echo " VAT is 9%: ".$VAT.'/-  ';
-                $PbtFound = ((109*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Provident found is 9%: ".$PbtFound.'/-  ';
-                //function call
-                calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
-                break;
-            case $BasicSalary <= 50000:
-                $houseRent = ((150*$BasicSalary)/100)-$BasicSalary;
-                    // echo "House Rent is 50%: ".$houseRent.'/-  ';
-                $medicalCost = ((150*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Medical cost is 50%: ".$medicalCost.'/-  ';
-                $transport = ((150*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Transport cost is 50%: ".$transport.'/-  ';
-                $VAT = ((110*$BasicSalary)/100)-$BasicSalary;
-                    // echo " VAT is 10%: ".$VAT.'/-  ';
-                $PbtFound = ((110*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Provident found is 10%: ".$PbtFound.'/-  ';
-                //function call
-                calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
-                break;
-            case $BasicSalary <= 100000:
-                $houseRent = ((170*$BasicSalary)/100)-$BasicSalary;
-                    // echo "House Rent is 70%: ".$houseRent.'/-  ';
-                $medicalCost = ((170*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Medical cost is 70%: ".$medicalCost.'/-  ';
-                $transport = ((170*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Transport cost is 70%: ".$transport.'/-  ';
-                $VAT = ((115*$BasicSalary)/100)-$BasicSalary;
-                    // echo " VAT is 15%: ".$VAT.'/-  ';
-                $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
-                    // echo " Provident found is 15%: ".$PbtFound.'/-  ';
-                //function call
-                calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
-                break;
-            default:
-                echo "Do not increase House rent.";
-                echo "Do not increase Medical Cost.";
-                echo "Do not increase Transport.";
+            switch($BasicSalary)
+            {
+                case $BasicSalary <= 10000:
+                    $houseRent = ((110*$BasicSalary)/100)-$BasicSalary;
+                        //echo "House Rent is 10%: ".$houseRent.'/-  ';
+                    $medicalCost = ((110*$BasicSalary)/100)-$BasicSalary;
+                        //echo " Medical cost is 10%: ".$medicalCost.'/-  ';
+                    $transport = ((110*$BasicSalary)/100)-$BasicSalary;
+                        //echo " Transport cost is 10%: ".$transport.'/-  ';
+                    $VAT = ((105*$BasicSalary)/100)-$BasicSalary;
+                        //echo " VAT is 5%: ".$VAT.'/-  ';
+                    $PbtFound = ((105*$BasicSalary)/100)-$BasicSalary;
+                        //echo " Provident found is 5%: ".$PbtFound.'/-  ';
+                    //function call
+                    calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
+                    break;
+                case $BasicSalary <= 25000:
+                    $houseRent = ((125*$BasicSalary)/100)-$BasicSalary;
+                        // echo "House Rent is 25%: ".$houseRent.'/-  ';
+                    $medicalCost = ((125*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Medical cost is 25%: ".$medicalCost.'/-  ';
+                    $transport = ((125*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Transport cost is 25%: ".$transport.'/-  ';
+                    $VAT = ((107*$BasicSalary)/100)-$BasicSalary;
+                        // echo " VAT is 7%: ".$VAT.'/-  ';
+                    $PbtFound = ((107*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Provident found is 7%: ".$PbtFound.'/-  ';
+                    //function call
+                    calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
+                    break;
+                case $BasicSalary <= 30000:
+                    $houseRent = ((130*$BasicSalary)/100)-$BasicSalary;
+                        // echo "House Rent is 30%: ".$houseRent.'/-  ';
+                    $medicalCost = ((130*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Medical cost is 30%: ".$medicalCost.'/-  ';
+                    $transport = ((130*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Transport cost is 30%: ".$transport.'/-  ';
+                    $VAT = ((108*$BasicSalary)/100)-$BasicSalary;
+                        // echo " VAT is 8%: ".$VAT.'/-  ';
+                    $PbtFound = ((108*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Provident found is 8%: ".$PbtFound.'/-  ';
+                    //function call
+                    calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
+                    break;
+                case $BasicSalary <= 40000:
+                    $houseRent = ((140*$BasicSalary)/100)-$BasicSalary;
+                        // echo "House Rent is 40%: ".$houseRent.'/-  ';
+                    $medicalCost = ((140*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Medical cost is 40%: ".$medicalCost.'/-  ';
+                    $transport = ((140*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Transport cost is 40%: ".$transport.'/-  ';
+                    $VAT = ((109*$BasicSalary)/100)-$BasicSalary;
+                        // echo " VAT is 9%: ".$VAT.'/-  ';
+                    $PbtFound = ((109*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Provident found is 9%: ".$PbtFound.'/-  ';
+                    //function call
+                    calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
+                    break;
+                case $BasicSalary <= 50000:
+                    $houseRent = ((150*$BasicSalary)/100)-$BasicSalary;
+                        // echo "House Rent is 50%: ".$houseRent.'/-  ';
+                    $medicalCost = ((150*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Medical cost is 50%: ".$medicalCost.'/-  ';
+                    $transport = ((150*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Transport cost is 50%: ".$transport.'/-  ';
+                    $VAT = ((110*$BasicSalary)/100)-$BasicSalary;
+                        // echo " VAT is 10%: ".$VAT.'/-  ';
+                    $PbtFound = ((110*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Provident found is 10%: ".$PbtFound.'/-  ';
+                    //function call
+                    calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
+                    break;
+                case $BasicSalary <= 100000:
+                    $houseRent = ((170*$BasicSalary)/100)-$BasicSalary;
+                        // echo "House Rent is 70%: ".$houseRent.'/-  ';
+                    $medicalCost = ((170*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Medical cost is 70%: ".$medicalCost.'/-  ';
+                    $transport = ((170*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Transport cost is 70%: ".$transport.'/-  ';
+                    $VAT = ((115*$BasicSalary)/100)-$BasicSalary;
+                        // echo " VAT is 15%: ".$VAT.'/-  ';
+                    $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
+                        // echo " Provident found is 15%: ".$PbtFound.'/-  ';
+                    //function call
+                    calculateSalary($Eid,$BasicSalary,$houseRent,$medicalCost,$transport,$Overtime,$OvertimeMoney,$AbsentDay,$AbsentDeduct,$VAT,$PbtFound,$Advance,$remark,$Bonus,$date);
+                    break;
+                default:
+                    echo "Do not increase House rent.";
+                    echo "Do not increase Medical Cost.";
+                    echo "Do not increase Transport.";
+            }
         }
     }
 }
@@ -175,75 +183,83 @@ if(isset($_POST['btnSalary']))
     }
 
     $employee = $_POST['cbxEmployeeSL'];
-    $sqlFilter = "SELECT * FROM tb_salaryinfo WHERE EId = '$employee'";
-    $sqlFilterResult = mysqli_query($conn, $sqlFilter);
-    if(mysqli_num_rows($sqlFilterResult) > 0)
+    if(empty($employee))
     {
-        $ex = "This Employee are salary already created! You don't create salary for the employee. Thank you !";
-        header("Location:salary?error=$ex");        
+        $ex = 'Employee are not selected. Please select employess and try again. Thank you!';
+        header("Location:salary?error=$ex");
     }
     else
     {
-        $EmId = $_POST['cbxEmployeeSL'];
-        $BasicSalary = $_POST['txtBasicSalarySL'];
-
-        switch($BasicSalary)
+        $sqlFilter = "SELECT * FROM tb_salaryinfo WHERE EId = '$employee'";
+        $sqlFilterResult = mysqli_query($conn, $sqlFilter);
+        if(mysqli_num_rows($sqlFilterResult) > 0)
         {
-            case $BasicSalary <= 10000:
-                $houseRent = ((110*$BasicSalary)/100)-$BasicSalary;
-                $medicalCost = ((110*$BasicSalary)/100)-$BasicSalary;
-                $transport = ((110*$BasicSalary)/100)-$BasicSalary;
-                $VAT = ((105*$BasicSalary)/100)-$BasicSalary;
-                $PbtFound = ((105*$BasicSalary)/100)-$BasicSalary;
-                createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
-                break;
-            case $BasicSalary <= 25000:
-                $houseRent = ((125*$BasicSalary)/100)-$BasicSalary;
-                $medicalCost = ((125*$BasicSalary)/100)-$BasicSalary;
-                $transport = ((125*$BasicSalary)/100)-$BasicSalary;
-                $VAT = ((107*$BasicSalary)/100)-$BasicSalary;
-                $PbtFound = ((107*$BasicSalary)/100)-$BasicSalary;
-                createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
-                break;
-            case $BasicSalary <= 30000:
-                $houseRent = ((130*$BasicSalary)/100)-$BasicSalary;
-                $medicalCost = ((130*$BasicSalary)/100)-$BasicSalary;
-                $transport = ((130*$BasicSalary)/100)-$BasicSalary;
-                $VAT = ((108*$BasicSalary)/100)-$BasicSalary;
-                $PbtFound = ((108*$BasicSalary)/100)-$BasicSalary;
-                createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
-                break;
-            case $BasicSalary <= 40000:
-                $houseRent = ((140*$BasicSalary)/100)-$BasicSalary;
-                $medicalCost = ((140*$BasicSalary)/100)-$BasicSalary;
-                $transport = ((140*$BasicSalary)/100)-$BasicSalary;
-                $VAT = ((109*$BasicSalary)/100)-$BasicSalary;
-                $PbtFound = ((109*$BasicSalary)/100)-$BasicSalary;
-                createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
-                break;
-            case $BasicSalary <= 50000:
-                $houseRent = ((150*$BasicSalary)/100)-$BasicSalary;
-                $medicalCost = ((150*$BasicSalary)/100)-$BasicSalary;
-                $transport = ((150*$BasicSalary)/100)-$BasicSalary;
-                $VAT = ((110*$BasicSalary)/100)-$BasicSalary;
-                $PbtFound = ((110*$BasicSalary)/100)-$BasicSalary;
-                createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
-                break;
-            case $BasicSalary <= 100000:
-                $houseRent = ((170*$BasicSalary)/100)-$BasicSalary;
-                $medicalCost = ((170*$BasicSalary)/100)-$BasicSalary;
-                $transport = ((170*$BasicSalary)/100)-$BasicSalary;
-                $VAT = ((115*$BasicSalary)/100)-$BasicSalary;
-                $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
-                createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
-                break;
-            default:
-                $houseRent = 0;
-                $medicalCost = 0;
-                $transport = 0;
-                $VAT = ((115*$BasicSalary)/100)-$BasicSalary;
-                $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
-                createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+            $ex = "This Employee are salary already created! You don't create salary for the employee. Thank you !";
+            header("Location:salary?error=$ex");        
+        }
+        else
+        {
+            $EmId = $_POST['cbxEmployeeSL'];
+            $BasicSalary = $_POST['txtBasicSalarySL'];
+
+            switch($BasicSalary)
+            {
+                case $BasicSalary <= 10000:
+                    $houseRent = ((110*$BasicSalary)/100)-$BasicSalary;
+                    $medicalCost = ((110*$BasicSalary)/100)-$BasicSalary;
+                    $transport = ((110*$BasicSalary)/100)-$BasicSalary;
+                    $VAT = ((105*$BasicSalary)/100)-$BasicSalary;
+                    $PbtFound = ((105*$BasicSalary)/100)-$BasicSalary;
+                    createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+                    break;
+                case $BasicSalary <= 25000:
+                    $houseRent = ((125*$BasicSalary)/100)-$BasicSalary;
+                    $medicalCost = ((125*$BasicSalary)/100)-$BasicSalary;
+                    $transport = ((125*$BasicSalary)/100)-$BasicSalary;
+                    $VAT = ((107*$BasicSalary)/100)-$BasicSalary;
+                    $PbtFound = ((107*$BasicSalary)/100)-$BasicSalary;
+                    createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+                    break;
+                case $BasicSalary <= 30000:
+                    $houseRent = ((130*$BasicSalary)/100)-$BasicSalary;
+                    $medicalCost = ((130*$BasicSalary)/100)-$BasicSalary;
+                    $transport = ((130*$BasicSalary)/100)-$BasicSalary;
+                    $VAT = ((108*$BasicSalary)/100)-$BasicSalary;
+                    $PbtFound = ((108*$BasicSalary)/100)-$BasicSalary;
+                    createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+                    break;
+                case $BasicSalary <= 40000:
+                    $houseRent = ((140*$BasicSalary)/100)-$BasicSalary;
+                    $medicalCost = ((140*$BasicSalary)/100)-$BasicSalary;
+                    $transport = ((140*$BasicSalary)/100)-$BasicSalary;
+                    $VAT = ((109*$BasicSalary)/100)-$BasicSalary;
+                    $PbtFound = ((109*$BasicSalary)/100)-$BasicSalary;
+                    createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+                    break;
+                case $BasicSalary <= 50000:
+                    $houseRent = ((150*$BasicSalary)/100)-$BasicSalary;
+                    $medicalCost = ((150*$BasicSalary)/100)-$BasicSalary;
+                    $transport = ((150*$BasicSalary)/100)-$BasicSalary;
+                    $VAT = ((110*$BasicSalary)/100)-$BasicSalary;
+                    $PbtFound = ((110*$BasicSalary)/100)-$BasicSalary;
+                    createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+                    break;
+                case $BasicSalary <= 100000:
+                    $houseRent = ((170*$BasicSalary)/100)-$BasicSalary;
+                    $medicalCost = ((170*$BasicSalary)/100)-$BasicSalary;
+                    $transport = ((170*$BasicSalary)/100)-$BasicSalary;
+                    $VAT = ((115*$BasicSalary)/100)-$BasicSalary;
+                    $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
+                    createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+                    break;
+                default:
+                    $houseRent = 0;
+                    $medicalCost = 0;
+                    $transport = 0;
+                    $VAT = ((115*$BasicSalary)/100)-$BasicSalary;
+                    $PbtFound = ((115*$BasicSalary)/100)-$BasicSalary;
+                    createSalary($EmId,$BasicSalary,$houseRent,$medicalCost,$transport,$VAT,$PbtFound);
+            }
         }
     }
 }
@@ -264,6 +280,7 @@ if(isset($_POST['btnAssign']))
     {
         $Eid = '';
     }
+    
     // basic salary search
 
     $sqlBS = "SELECT * FROM `tb_salaryinfo` WHERE EId = '$Eid'";
