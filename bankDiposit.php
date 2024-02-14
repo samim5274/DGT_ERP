@@ -217,11 +217,10 @@
                                 <tr>
                                     <th scope="row"><?php echo $i;?></th>
                                     <td><?php echo $row['AccountNumber'];?></td>
-                                    <td><?php echo $diposit = '৳ '.$row['SUM(Amount)'].'/-';?></td>
-                                    <td><?php echo $withdraw = '৳ '.$row2['SUM(Amount)'].'/-';?></td>
-                                    <?php $row['SUM(Amount)'] - $row2['SUM(Amount)'];?>
-                                    <?php $tt = $row['SUM(Amount)'] - $row2['SUM(Amount)'];?>
-                                    <td><?php echo '৳ '.$tt.'/-';?></td>
+                                    <td><?php echo $diposit = $row['SUM(Amount)'];?></td>
+                                    <td><?php echo $withdraw = $row2['SUM(Amount)'];?></td>
+                                    <?php $total = $diposit - $withdraw; ?>
+                                    <td><?php echo '৳ '.$total.'/-';?></td>
                                 </tr>
                                 <?php $i++; } ?>
                             </tbody>
