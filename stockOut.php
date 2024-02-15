@@ -48,7 +48,7 @@
         <div class="row">
             <div class="col-lg-12">
             <?php if(isset($_GET['error'])){ ?> <p class="error"><?php echo $_GET['error']; ?></p> <?php } ?>
-                <form action="stockOutBK.php" method="POST">
+                <form action="stockOutBK" method="POST">
 
                 <!-- <label for="cbxProductName" class="form-label">Product Name</label><br> -->
                 <select name="cbxProductName" required class="form-field form-select" id="cbxProductName">

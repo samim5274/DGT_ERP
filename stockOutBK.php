@@ -24,7 +24,7 @@ if(isset($_POST['btnSubmit']))
     else
     {
         $ex = "Product stock less then ZERO. Please input current value. Thank you!";
-        header("Location: stockOut.php?error=$ex");
+        // header("Location: stockOut.php?error=$ex");
     }
 }
 else

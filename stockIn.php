@@ -47,8 +47,8 @@
         <div class="row">
             <div class="col-lg-12">
             <?php if(isset($_GET['error'])){ ?> <p class="error"><?php echo $_GET['error']; ?></p> <?php } ?>
-                <form action="stockinBK.php" method="POST">
-                <label for="cbxProductName" class="form-label">Product Name</label><br>
+                <form action="stockinBK" method="POST">
+                    <label for="cbxProductName" class="form-label">Product Name</label><br>
                 <select name="cbxProductName" required class="form-field form-select" id="cbxProductName">
                     <?php 
                         $sqlData = "SELECT * FROM tb_productinfo";
