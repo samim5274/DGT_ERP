@@ -18,6 +18,11 @@ $start_from=($pages-1)*3;
 $sqlData = "SELECT * FROM `tb_employeeinfo` limit $start_from, $num_per_page";
 $sqlResult = mysqli_query($conn,$sqlData);
 
+$sql = "SELECT * FROM tb_employeeinfo";
+$res = mysqli_query($conn,$sql);
+$total_record = mysqli_num_rows($res);
+$total_pages = ceil($total_record/$num_per_page);
+            
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,7 +38,7 @@ $sqlResult = mysqli_query($conn,$sqlData);
     <link rel="stylesheet" href="styleProductFilter.css">
 </head>
 <body>
-    <!-- Salary section start -->
+
 
 <section id="salary-section" class="bg-secondary text-light">
     <div class="container">
@@ -66,57 +71,179 @@ $sqlResult = mysqli_query($conn,$sqlData);
                     </tr>
                 </tbody>
             </table>
-            <?php
-                $sql = "SELECT * FROM tb_employeeinfo";
-                $res = mysqli_query($conn,$sql);
-                $total_record = mysqli_num_rows($res);
-                $total_pages = ceil($total_record/$num_per_page);
-                for($i=1;$i<=$total_pages; $i++)
-                {
-                    echo'
-                    <nav>
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="pagination?pages='.$i.'">'.$i.'</a>
-                            </li>
-                        </ul>
-                    </nav>
-                ';
-                    // echo '<a href="pagination?pages='.$i.'">'.$i.'</a>';
-                }
+            
+            
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="?pages=1">First</a></li>
+    <li class="page-item">
+    <?php
+        if(isset($_GET['pages']) && $_GET['pages'] > 1){
             ?>
+            <a class="page-link" href="?pages= <?php echo $_GET['pages'] - 1; ?> "><span aria-hidden="true">&laquo;</span></a>
+            <?php
+        }else{
+            ?>
+                <a class="page-link"><span aria-hidden="true">&#8653;</span></a>
+            <?php 
+        }
+    ?>
+    </li>
+    <?php
+    for($i=1;$i<=$total_pages; $i++){
+        ?><li class="page-item"><a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a></li><?php
+    }
+    ?>    
+    <li class="page-item">
+    <?php
+        if(!isset($_GET['pages'])){
+            ?>
+            <a class="page-link" href="?pages=2"><span aria-hidden="true">&raquo;</span></a>
+            <?php
+        }else{
+            if($_GET['pages']>=$total_pages){
+                ?>
+                <a class="page-link"><span aria-hidden="true">&#8655;</span></a>
+                <?php
+            }else{
+                ?>
+                <a class="page-link" href="?pages=<?php echo $_GET['pages'] + 1; ?>"><span aria-hidden="true">&raquo;</span></a>
+                <?php
+            }
+        }
+    ?>
+    </li>
+    <li class="page-item"><a class="page-link" href="?pages=<?php echo $total_pages; ?>">Last</a></li>
+  </ul>
+</nav>
+
+<div class="page-info">
+    <?php 
+    if(!isset($_GET['pages'])){
+        $page = 1;
+    }
+    else{
+        $page = $_GET['pages'];
+    }
+    ?>
+    <p>showing <?php echo $page ?>  of <?php echo $total_pages;?> pages </p>
+</div>
+
         </div>
     </div>
 </section>
 
-<!-- Salary section end -->
 
-<?php
-    $sql = "SELECT * FROM tb_employeeinfo";
-    $res = mysqli_query($conn,$sql);
-    $total_record = mysqli_num_rows($res);
-    $total_pages = ceil($total_record/$num_per_page);
-    for($i=1;$i<=$total_pages; $i++)
-    {
-        echo'
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="pagination?pages='.$i.'">'.$i.'</a>
-                </li>                
-            </ul>
-        </nav>
-    ';
+
+
+<!--
+    <div class="page-info">
+    <?php 
+    if(!isset($_GET['pages'])){
+        $page = 1;
     }
-?>
+    else{
+        $page = $_GET['pages'];
+    }
+    ?>
+    showing <?php echo $page ?>  of <?php echo $total_pages;?> pages 
+</div>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <li class="page-item"><a class="page-link" href="pagination?pages='.$i.'">1</a></li>                
-        <li class="page-item"><a class="page-link" href="pagination?pages='.$i.'">2</a></li>                
-        <li class="page-item"><a class="page-link" href="pagination?pages='.$i.'">3</a></li>                
-    </ul>
+    <nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="?pages=1">First</a></li>
+    <li class="page-item">
+    <?php
+        if(isset($_GET['pages']) && $_GET['pages'] > 1){
+            ?>
+            <a class="page-link" href="?pages= <?php echo $_GET['pages'] - 1; ?> "><span aria-hidden="true">&laquo;</span></a>
+            <?php
+        }else{
+            ?>
+                <a class="page-link"><span aria-hidden="true">&laquo;</span></a>
+            <?php 
+        }
+    ?>
+    </li>
+    <?php
+    for($i=1;$i<=$total_pages; $i++){
+        ?><li class="page-item"><a class="page-link" href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a></li><?php
+    }
+    ?>    
+    <li class="page-item">
+    <?php
+        if(!isset($_GET['pages'])){
+            ?>
+            <a class="page-link" href="?pages=2"><span aria-hidden="true">&raquo;</span></a>
+            <?php
+        }else{
+            if($_GET['pages']>=$total_pages){
+                ?>
+                <a class="page-link"><span aria-hidden="true">&raquo;</span></a>
+                <?php
+            }else{
+                ?>
+                <a class="page-link" href="?pages=<?php echo $_GET['pages'] + 1; ?>"><span aria-hidden="true">&raquo;</span></a>
+                <?php
+            }
+        }
+    ?>
+    </li>
+    <li class="page-item"><a class="page-link" href="?pages=<?php echo $total_pages; ?>">Last</a></li>
+  </ul>
 </nav>
+-->
+
+
+<!-- <div class="pagination">
+
+    <a href="?pages=1">First</a>
+
+    <?php
+        if(isset($_GET['pages']) && $_GET['pages'] > 1){
+            ?>
+            <a href="?pages= <?php echo $_GET['pages'] - 1 ?> ">Previows</a>
+            <?php
+        }else{
+            ?>
+                <a>Previows</a>
+            <?php 
+        }
+    ?> 
+
+    <div class="page-number">
+        <?php
+        for($i=1;$i<=$total_pages; $i++){
+            ?><a href="?pages=<?php echo $i; ?>"><?php echo $i; ?></a><?php
+        }
+        ?>
+        
+    </div>
+
+    <?php
+        if(!isset($_GET['pages'])){
+            ?>
+            <a href="?pages=2">Next</a>
+            <?php
+        }else{
+            if($_GET['pages']>=$total_pages){
+                ?>
+                <a>Next</a>
+                <?php
+            }else{
+                ?>
+                <a href="?pages=<?php echo $_GET['pages'] + 1; ?>">Next</a>
+                <?php
+            }
+        }
+    ?>
+
+    <a href="?pages=<?php echo $total_pages; ?>">Last</a>
+
+</div> -->
+
+
+
 
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
