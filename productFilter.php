@@ -92,9 +92,11 @@ session_start();
 
 
 
+<!-- test slice section product name show  -->
 
-
-
+<div class="content">
+    <p id="pp"></p>
+</div>
 
 
 
@@ -146,7 +148,7 @@ $total_pages = ceil($total_record/$num_per_page);
     {?>
     <tr>
         <th scope="row"><?=$i;?></th>
-        <td><?=$val['P_Name'];?></td>
+        <td class="data" data-val="<?=$val['P_Name'];?>"><?=$val['P_Name'];?></td>
         <?php $cid = $val['P_Cat_Id'];?>
         <?php
         $sqlCData = "SELECT cat.C_name FROM `tb_catagoryinfo` AS cat WHERE Id=$cid";
@@ -173,6 +175,11 @@ $total_pages = ceil($total_record/$num_per_page);
 
 
 </table>
+
+
+
+
+
 
 
 
