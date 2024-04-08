@@ -94,14 +94,9 @@ session_start();
 
 <!-- test slice section product name show  -->
 
-<div class="content">
-    <p id="pp"></p>
+<div class="container">
+<div id="content"></div>
 </div>
-
-
-
-
-
 
 
 

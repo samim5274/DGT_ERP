@@ -1,20 +1,25 @@
 let displayValue = document.querySelectorAll(".data");
-
+var div = document.getElementById('content');
 displayValue.forEach(displayValue=>{
-    let pname = displayValue.getAttribute("data-val");
-    let range = pname.length;
+    const pname = displayValue.getAttribute("data-val");
+    const range = pname.length;
     let fpname;
+
+    const p = document.createElement("p");
+
     if (range <= 20)
     {
-        var result = pname;
+        const result = pname;
         console.log(result);
-        document.getElementById("pp").innerHTML=result;
+        p.innerHTML = result;
+        div.append(p);
     }
     else if(range => 20)
     {
         fpname = pname.slice(0,21);
-        var result = fpname+"...";
+        const result = fpname+"...";
         console.log(result);
-        document.getElementById("pp").innerHTML=result;
+        p.innerHTML = result;
+        div.append(p);
     }
 });
