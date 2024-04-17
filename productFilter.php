@@ -144,6 +144,7 @@ $total_pages = ceil($total_record/$num_per_page);
     <tr>
         <th scope="row"><?=$i;?></th>
         <td class="data" data-val="<?=$val['P_Name'];?>"><?=$val['P_Name'];?></td>
+        <td hidden class="data2" data-val="<?=$val['P_Image'];?>"></td>
         <?php $cid = $val['P_Cat_Id'];?>
         <?php
         $sqlCData = "SELECT cat.C_name FROM `tb_catagoryinfo` AS cat WHERE Id=$cid";
