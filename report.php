@@ -5,7 +5,7 @@
 
     if(isset($_SESSION['Id']) && isset($_SESSION['E_Name']))
     {
-        
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,13 +37,19 @@
         <div class="row">
             <div class="text-center text-bg-primary py-3 my-3"><h2>PPM - Inline - FRI</h2></div>
             <div class="">
-                <form class="row g-3">
+            <?php if(isset($_GET['error'])){ ?> <p class="error text-center text-danger mark"><?php echo $_GET['error']; ?></p> <?php } ?>
+            <?php if(isset($_GET['success'])){ ?> <p class="alert alert-success text-center text-success mark"><?php echo $_GET['success']; ?></p> <?php } ?>
+                <form action="reportBK" enctype="multipart/form-data" method="POST" class="row g-3">
                     <div class="col-md-10">
-                        <label for="inputEmail4" class="form-label">Seasion</label>
-                        <select id="inputState" class="form-select">
-                            <option selected disabled>Choose...</option>
-                            <option>SS-24</option>
-                            <option>AW-24</option>
+                        <label for="Seasion" class="form-label">Seasion</label>
+                        <select id="Seasion" name="cbxSeasion" class="form-select" required>
+                            <?php    
+                            $sqlData = "SELECT * FROM tb_seasion";
+                            $sqlResult = mysqli_query($conn,$sqlData); ?>
+                            <option selected disabled>Select Designation</option>
+                            <?php while($row = mysqli_fetch_array($sqlResult)){?>
+                            <option value="<?php echo $depId = $row['id']; ?>"><?php echo $row['name']; ?></option>
+                            <?php } ?>                            
                         </select>
                     </div>
                     <div class="col-md-2">
@@ -52,32 +58,26 @@
                     </div>
                     <div class="col-md-6">
                         <label for="inputAddress" class="form-label">Style</label>
-                        <input type="text" class="form-control" id="inputAddress" >
+                        <input type="number" name="txtStyle" class="form-control" id="inputAddress" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="inputAddress" class="form-label">PO</label>
-                        <input type="text" class="form-control" id="inputAddress">
+                        <label for="PO" class="form-label">PO</label>
+                        <input type="number" name="txtPO" class="form-control" id="PO" required>
+                    </div>
+                    <div class="col-md-4">                        
+                        <label for="inputCity" class="form-check-label">Inline</label>
+                        <input type="text" name="txtInline"  class="form-control" id="inputCity" required placeholder="Enter the inline reporter name">
+                    </div>
+                    <div class="col-md-4">                        
+                        <label for="inputState" class="form-check-label">PPM</label>
+                        <input type="text" name="txtPPM"  class="form-control" id="inputState" required placeholder="Enter the PPM reporter name">
+                    </div>
+                    <div class="col-md-4">               
+                        <label for="inputZip" class="form-check-label">FRI</label>         
+                        <input type="text" name="txtFRI"  class="form-control" id="inputZip" required placeholder="Enter the FRI reporter name">
                     </div>
                     <div class="col-12">
-                        <label for="inputAddress2" class="form-label">Reporter</label>
-                        <input type="text" class="form-control" id="inputAddress2">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="inputCity" class="form-label">Inline</label>
-                        <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="inputState" class="form-label">PPM</label>
-                        <input type="text" class="form-control" id="inputCity">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="inputZip" class="form-label">FRI</label>
-                        <input type="text" class="form-control" id="inputZip">
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-success">Save</button>
-                        <button  class="btn btn-danger">Edit</button>
-                        <button  class="btn btn-warning">Back</button>
+                        <button name="btnReportSave" type="submit" class="btn btn-success">Save</button>
                     </div>
                 </form>
             </div>
@@ -104,71 +104,31 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php 
+                        $sqlData = "SELECT * FROM tb_ppm_inline_fri";
+                        $sqlResult = mysqli_query($conn, $sqlData);
+                        $i=1;
+                        while($row = mysqli_fetch_array($sqlResult)){
+                        ?>
                         <tr>
-                            <th scope="row">1</th>
-                            <td>AW-24</td>
-                            <td>1005692</td>
-                            <td>4100035789</td>
-                            <td>Parves</td>
-                            <td>Simanta</td>
-                            <td>Shanto Rabby</td>
+                            <th scope="row"><?php echo $i;?></th>
+                            <?php 
+                            $seasionid = $row['seasion'];
+                            $seasionData = "SELECT * FROM `tb_seasion` WHERE id = '$seasionid'";
+                            $seasionResult = mysqli_query($conn, $seasionData);
+                            while($row2 = mysqli_fetch_array($seasionResult))
+
+                            {?> <td><?php echo $row2['name'];?></td><?php  } ?>    
+
+                            <td><?php echo $row['style'];?></td>
+                            <td><?php echo $row['po'];?></td>
+                            <td><?php echo $row['ppm'];?></td>
+                            <td><?php echo $row['inline'];?></td>
+                            <td><?php echo $row['fri'];?></td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>AW-24</td>
-                            <td>1005692</td>
-                            <td>4100035789</td>
-                            <td>Parves</td>
-                            <td>Simanta</td>
-                            <td>Shanto Rabby</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>AW-24</td>
-                            <td>1005692</td>
-                            <td>4100035789</td>
-                            <td>Parves</td>
-                            <td>Simanta</td>
-                            <td>Shanto Rabby</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>AW-24</td>
-                            <td>1005692</td>
-                            <td>4100035789</td>
-                            <td>Parves</td>
-                            <td>Simanta</td>
-                            <td>Shanto Rabby</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>AW-24</td>
-                            <td>1005692</td>
-                            <td>4100035789</td>
-                            <td>Parves</td>
-                            <td>Simanta</td>
-                            <td>Shanto Rabby</td>
-                        </tr>
+                        <?php $i++; } ?>
                     </tbody>
                 </table>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="pagination">
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination">
-                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                        <li class="page-item"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                    </ul>
-                </nav>
             </div>
         </div>
     </div>
